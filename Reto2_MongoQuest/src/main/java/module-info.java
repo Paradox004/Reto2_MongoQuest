@@ -1,0 +1,7 @@
+module tonguely.reto2_mongoquest {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    opens tonguely.reto2_mongoquest to javafx.fxml;
+    exports tonguely.reto2_mongoquest;
+}
