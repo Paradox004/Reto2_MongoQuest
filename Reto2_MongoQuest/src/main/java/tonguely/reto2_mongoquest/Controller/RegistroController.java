@@ -4,15 +4,21 @@
  */
 package tonguely.reto2_mongoquest.Controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import modelo.Usuario;
+import tonguely.reto2_mongoquest.App;
+import tonguely.reto2_mongoquest.DAO.UsuarioDAO;
 /**
  * FXML Controller class
  *
@@ -33,6 +39,7 @@ public class RegistroController implements Initializable {
     private Button invitadoButton;
     @FXML
     private TextField nombreField;
+    UsuarioDAO udao=new UsuarioDAO();
     /**
      * Initializes the controller class.
      */
@@ -43,10 +50,43 @@ public class RegistroController implements Initializable {
     
     @FXML
     private void creacionUsuario(ActionEvent event) {
+        Usuario usuario = new Usuario();
+        usuario.setNombre(nombreField.getText());
+        usuario.setEmail(correoField.getText());
+        usuario.setContraseña(contrasenaField.getText());
+        usuario.setRacha(0);
+        usuario.setCursos(new ArrayList<>());
+        if(udao.crearUsuario(usuario)){
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Usuario creado con exito");
+        alerta.setHeaderText("Usuario creado");
+        alerta.setContentText("Usuario creado con exito!");
+        alerta.showAndWait();
+            try {
+                App.setRoot("inicioSesion_1");
+            } catch (IOException ex) {
+                System.getLogger(RegistroController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        else{
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Creacion del usuario fallida");
+        alerta.setContentText("Fallo en la creacion de usuario");
+        alerta.showAndWait();
+        nombreField.setText("");
+        correoField.setText("");
+        contrasenaField.setText("");
+        }
     }
-
+    
     @FXML
     private void abrirIniciarVentana(ActionEvent event) {
+        try {
+            App.setRoot("inicioSesion_1");
+        } catch (IOException ex) {
+            System.getLogger(RegistroController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
     @FXML

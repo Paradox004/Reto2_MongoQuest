@@ -50,7 +50,7 @@ public class InicioSesionController {
             }
         }
         else{
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Error");
         alerta.setHeaderText("Inicio de sesión incorrecto");
         alerta.setContentText("El usuario o la contraseña no son correctos.");
@@ -62,8 +62,13 @@ public class InicioSesionController {
 
     @FXML
     private void registrarUsuario(ActionEvent event) {
+        try {
+            App.setRoot("registro");
+        } catch (IOException ex) {
+            System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
-
+        
     @FXML
     private void entradaInvitado(ActionEvent event) {
     }
