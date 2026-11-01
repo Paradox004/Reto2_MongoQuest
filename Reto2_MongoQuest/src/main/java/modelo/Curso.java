@@ -5,6 +5,7 @@
 package modelo;
 
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
 /**
@@ -12,6 +13,7 @@ import org.bson.types.ObjectId;
  * @author songo
  */
 public class Curso {
+    @BsonId
     private ObjectId id;
     private String nombre;
     private int precio;

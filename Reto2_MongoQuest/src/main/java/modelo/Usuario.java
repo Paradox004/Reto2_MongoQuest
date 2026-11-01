@@ -6,6 +6,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
 /**
@@ -13,6 +14,8 @@ import org.bson.types.ObjectId;
  * @author songo
  */
 public class Usuario {
+    
+    @BsonId
     private ObjectId id;
     private String nombre;
     private String email;
@@ -20,14 +23,14 @@ public class Usuario {
     private int racha;
     private ArrayList<Curso> cursos;
 
-    public Usuario(ObjectId id, String nombre, String email, String contraseña, int racha, ArrayList<Curso> cursos) {
-        this.id = id;
+    public Usuario(String nombre, String email, String contraseña, int racha, ArrayList<Curso> cursos) {
         this.nombre = nombre;
         this.email = email;
         this.contraseña = contraseña;
         this.racha = racha;
         this.cursos = cursos;
     }
+
     
     public Usuario() {
     }
