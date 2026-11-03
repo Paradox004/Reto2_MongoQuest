@@ -7,10 +7,13 @@ package tonguely.reto2_mongoquest.Controller;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import modelo.Usuario;
 import tonguely.reto2_mongoquest.App;
 import tonguely.reto2_mongoquest.DAO.UsuarioDAO;
 
@@ -36,15 +39,22 @@ public class InicioSesionController {
     @FXML
     private void iniciarSesion(ActionEvent event) {
 
-        boolean si=dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
-        if(si){
+        Usuario usuario=dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+        if(usuario !=null){
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Credenciales Correctas");
         alerta.setHeaderText("Inicio de sesión correcto");
         alerta.setContentText("Las credenciales coinciden.");
         alerta.showAndWait();
             try {
-                App.setRoot("seleccionCurso");
+                FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("/view/seleccionCurso.fxml")
+            );
+                Parent root = loader.load();
+                SeleccionCursoController controller = loader.getController();
+                controller.cargarCursos(usuario.getId());
+                App.scene.setRoot(root);
+                
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
