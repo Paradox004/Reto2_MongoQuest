@@ -4,12 +4,15 @@
  */
 package tonguely.reto2_mongoquest.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -17,6 +20,7 @@ import javafx.scene.layout.VBox;
 import modelo.Curso;
 import modelo.Inscripciones;
 import org.bson.types.ObjectId;
+import tonguely.reto2_mongoquest.App;
 import tonguely.reto2_mongoquest.DAO.CursoDAO;
 import tonguely.reto2_mongoquest.DAO.InscripcionesDAO;
 
@@ -85,7 +89,7 @@ public class SeleccionCursoController implements Initializable {
 
         entrar.setOnAction(e -> {
             System.out.println("Entrando al curso: " + curso.getNombre());
-
+            
             // Aquí puedes abrir la pantalla del curso
         });
 
@@ -106,6 +110,27 @@ public class SeleccionCursoController implements Initializable {
     }
 }
 
+    private void abrirCurso(Curso curso) {
+
+    try {
+
+        FXMLLoader loader = new FXMLLoader(
+            App.class.getResource("/view/Actividades.fxml")
+        );
+
+        Parent root = loader.load();
+
+        ActividadesController controller =
+            loader.getController();
+
+        controller.setCurso(curso);
+
+        App.scene.setRoot(root);
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
     /**
      * Initializes the controller class.
      */
@@ -114,7 +139,5 @@ public class SeleccionCursoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-
-    
-    
+  
 }
