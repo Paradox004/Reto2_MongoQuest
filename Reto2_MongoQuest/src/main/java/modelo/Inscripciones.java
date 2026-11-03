@@ -13,8 +13,8 @@ public class Inscripciones {
 
     @BsonId
     private ObjectId id;
-    private int idEstudiante;
-    private int idCurso;
+    private ObjectId idEstudiante;
+    private ObjectId idCurso;
     private int progreso;
     private Date fechaInicio;
     private Date fechaFin;
@@ -31,19 +31,19 @@ public class Inscripciones {
         this.id = id;
     }
 
-    public int getIdEstudiante() {
+    public ObjectId getIdEstudiante() {
         return idEstudiante;
     }
 
-    public void setIdEstudiante(int idEstudiante) {
+    public void setIdEstudiante(ObjectId idEstudiante) {
         this.idEstudiante = idEstudiante;
     }
 
-    public int getIdCurso() {
+    public ObjectId getIdCurso() {
         return idCurso;
     }
 
-    public void setIdCurso(int idCurso) {
+    public void setIdCurso(ObjectId idCurso) {
         this.idCurso = idCurso;
     }
 

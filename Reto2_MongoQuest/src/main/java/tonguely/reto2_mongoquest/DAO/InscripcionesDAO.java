@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Inscripciones;
 import modelo.Usuario;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -26,13 +27,13 @@ public class InscripcionesDAO {
         coleccion = bd.getCollection("Inscripciones", Inscripciones.class);
     }
     
-    public List<Inscripciones> buscarPorEstudiante(int idEstudiante) {
+    public List<Inscripciones> buscarPorEstudiante(ObjectId idEstudiante) {
         ArrayList<Inscripciones> ins=new ArrayList<Inscripciones>();
         ins=coleccion.find(Filters.eq("idEstudiante", idEstudiante)).into(new ArrayList<>());
         return ins;
     }
 
-    public boolean estaInscrito(int idEstudiante, int idCurso) {
+    public boolean estaInscrito(ObjectId idEstudiante, ObjectId idCurso) {
     return coleccion.find(
         Filters.and(
             Filters.eq("idEstudiante", idEstudiante),

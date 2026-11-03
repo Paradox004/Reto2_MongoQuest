@@ -53,7 +53,7 @@ public class UsuarioDAO {
         return usuarios;
     }
     
-    public boolean comprobarLogin(String email, String password) {
+    public Usuario comprobarLogin(String email, String password) {
 
         // Buscar al usuario por email
         Usuario usuario = coleccion.find(eq("email", email)).first();
@@ -61,9 +61,9 @@ public class UsuarioDAO {
         // Comprobar si existe y si la contraseña coincide
         if (usuario != null
                 && usuario.getContraseña().equals(password)) {
-            return true;
+            return usuario;
         }
 
-        return false;
+        return null;
     }
 }
