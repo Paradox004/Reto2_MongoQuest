@@ -6,9 +6,12 @@ package tonguely.reto2_mongoquest.DAO;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import java.util.ArrayList;
 import java.util.List;
 import modelo.Actividades;
 import modelo.Curso;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -24,9 +27,9 @@ public class ActividadesDAO {
         actividades = bd.getCollection("Actividades", Actividades.class);
     }
     
-    public List<Actividades> actividadesCurso(ObjectID idCurso){
+    public ArrayList<Actividades> actividadesCurso(ObjectId idCurso){
         
-        return null;
-        
+        ArrayList<Actividades> ac=actividades.find(Filters.eq("curso_id",idCurso)).into(new ArrayList<>());
+        return ac;
     }
 }

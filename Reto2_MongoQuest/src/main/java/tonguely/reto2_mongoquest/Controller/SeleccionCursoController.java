@@ -90,7 +90,18 @@ public class SeleccionCursoController implements Initializable {
         entrar.setOnAction(e -> {
             System.out.println("Entrando al curso: " + curso.getNombre());
             
-            // Aquí puedes abrir la pantalla del curso
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("/view/actividades.fxml")
+            );
+                Parent root = loader.load();
+                ActividadesController controller = loader.getController();
+                controller.setCurso(curso);
+                App.scene.setRoot(root);
+                
+            } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         });
 
         tarjeta.getChildren().addAll(
