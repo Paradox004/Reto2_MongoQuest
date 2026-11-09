@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package tonguely.reto2_mongoquest.Controller;
+package tonguely.Controller;
 
+import tonguely.Controller.InicioSesionController;
+import tonguely.Controller.ActividadesController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -17,12 +19,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import modelo.Curso;
-import modelo.Inscripciones;
+import tonguely.modelo.Curso;
+import tonguely.modelo.Inscripciones;
 import org.bson.types.ObjectId;
-import tonguely.reto2_mongoquest.App;
-import tonguely.reto2_mongoquest.DAO.CursoDAO;
-import tonguely.reto2_mongoquest.DAO.InscripcionesDAO;
+import tonguely.Main.App;
+import tonguely.DAO.CursoDAO;
+import tonguely.DAO.InscripcionesDAO;
 
 /**
  * FXML Controller class

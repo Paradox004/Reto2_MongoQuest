@@ -1,4 +1,4 @@
-package tonguely.reto2_mongoquest.DAO;
+package tonguely.DAO;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

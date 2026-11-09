@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tonguely.reto2_mongoquest.Controller;
+package tonguely.Controller;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -13,9 +13,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import modelo.Usuario;
-import tonguely.reto2_mongoquest.App;
-import tonguely.reto2_mongoquest.DAO.UsuarioDAO;
+import tonguely.modelo.Usuario;
+import tonguely.Main.App;
+import tonguely.DAO.UsuarioDAO;
 
 /**
  *
