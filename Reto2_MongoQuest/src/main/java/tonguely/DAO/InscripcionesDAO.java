@@ -2,15 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tonguely.reto2_mongoquest.DAO;
+package tonguely.DAO;
 
+import tonguely.DAO.ConexionMongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
 import java.util.List;
-import modelo.Inscripciones;
-import modelo.Usuario;
+import tonguely.modelo.Inscripciones;
+import tonguely.modelo.Usuario;
 import org.bson.types.ObjectId;
 
 /**

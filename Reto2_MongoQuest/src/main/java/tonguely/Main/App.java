@@ -1,4 +1,4 @@
-package tonguely.reto2_mongoquest;
+package tonguely.Main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ public class App extends Application {
 public void start(Stage stage) throws IOException {
     System.out.println("5. Iniciando JavaFX");
 
-    scene = new Scene(loadFXML("InicioSesion_1"), 640, 480);
+    scene = new Scene(loadFXML("inicioSesion_1"), 640, 480);
 
     System.out.println("6. Creando escena");
 
@@ -59,7 +59,8 @@ private static Parent loadFXML(String fxml) throws IOException {
 
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
+    
 }

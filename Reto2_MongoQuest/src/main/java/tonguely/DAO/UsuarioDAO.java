@@ -1,11 +1,12 @@
-package tonguely.reto2_mongoquest.DAO;
+package tonguely.DAO;
 
+import tonguely.DAO.ConexionMongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
-import modelo.Usuario;
+import tonguely.modelo.Usuario;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
