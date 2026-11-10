@@ -72,7 +72,7 @@ public class RegistroController implements Initializable {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Error");
         alerta.setHeaderText("Creacion del usuario fallida");
-        alerta.setContentText("Fallo en la creacion de usuario");
+        alerta.setContentText("Ya existe un usuario con ese mail");
         alerta.showAndWait();
         nombreField.setText("");
         correoField.setText("");

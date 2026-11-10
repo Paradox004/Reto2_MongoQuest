@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.ActividadesController">
-   <center>
-      <Button mnemonicParsing="false" onAction="#cargarActividades" text="Vamos!" BorderPane.alignment="CENTER" />
-   </center>
-   <VBox fx:id="contenedorActividades" alignment="CENTER" prefHeight="400" prefWidth="500" spacing="15">
-   </VBox>
-   <bottom>
-      <Label fx:id="labelProgreso" BorderPane.alignment="CENTER" />
-   </bottom>
+<BorderPane
+    stylesheets="@../style/actividades.css"
+    prefHeight="500.0"
+    prefWidth="700.0"
+    xmlns="http://javafx.com/javafx/26"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="tonguely.Controller.ActividadesController">
+
+    <top>
+        <Label fx:id="labelProgreso"
+               text="Pregunta 1 de 10"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox fx:id="contenedorActividades"
+              alignment="CENTER"
+              spacing="22"
+              maxWidth="480"
+              styleClass="activity-container"/>
+    </center>
+
 </BorderPane>

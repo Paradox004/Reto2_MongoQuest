@@ -23,6 +23,16 @@ public class UsuarioDAO {
     }
 
      public boolean crearUsuario(Usuario usuario) {
+         boolean existe=false;
+         for(Usuario u:coleccion.find()){
+                 if(u.getEmail().equalsIgnoreCase(usuario.getEmail())){
+                     existe=true;
+                 }
+             }
+         if (existe){
+             return false;
+         }
+         else{
          try {
              coleccion.insertOne(usuario);
              return true;
@@ -30,8 +40,7 @@ public class UsuarioDAO {
              e.printStackTrace();
              return false;
          }
-        
-
+         }
     }
     
     public ObjectId obtenerIdPorEmail(String email) {
