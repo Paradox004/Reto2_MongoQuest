@@ -18,21 +18,20 @@ public class Curso {
     private String nombre;
     private int precio;
     private String descripcion;
+    private String foto;
     private List<Profesor> profesores;
-
-    public Curso(ObjectId id, String nombre, int precio, String descripcion, List<Profesor> profesores) {
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.profesores = profesores;
-    }
 
     public Curso() {
     }
 
-    public Curso(String nombre) {
+    
+    public Curso(ObjectId id, String nombre, int precio, String descripcion, String foto, List<Profesor> profesores) {
+        this.id = id;
         this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.foto = foto;
+        this.profesores = profesores;
     }
 
     public ObjectId getId() {
@@ -67,6 +66,14 @@ public class Curso {
         this.descripcion = descripcion;
     }
 
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
     public List<Profesor> getProfesores() {
         return profesores;
     }
@@ -77,8 +84,7 @@ public class Curso {
 
     @Override
     public String toString() {
-        return "Curso{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", descripcion=" + descripcion + ", profesores=" + profesores + '}';
+        return "Curso{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", descripcion=" + descripcion + ", foto=" + foto + ", profesores=" + profesores + '}';
     }
-    
-    
+ 
 }
