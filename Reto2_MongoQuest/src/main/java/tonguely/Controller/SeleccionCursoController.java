@@ -4,15 +4,10 @@
  */
 package tonguely.Controller;
 
-import tonguely.Controller.InicioSesionController;
-import tonguely.Controller.ActividadesController;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -31,7 +26,7 @@ import tonguely.DAO.InscripcionesDAO;
  *
  * @author songo
  */
-public class SeleccionCursoController implements Initializable {
+public class SeleccionCursoController{
 
     @FXML
     private GridPane gridCursos;
@@ -148,9 +143,5 @@ public class SeleccionCursoController implements Initializable {
      * Initializes the controller class.
      */
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
   
 }
