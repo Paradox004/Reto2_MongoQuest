@@ -1,0 +1,85 @@
+
+/* Fondo de la pantalla */
+.root {
+    -fx-background-color: #F1F5FA;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Título de la pantalla */
+.titulo-cursos {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #315F91;
+}
+
+/* Tarjeta de cada curso */
+.curso-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #E0E8F1;
+    -fx-padding: 20px;
+    -fx-spacing: 18px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Nombre del curso */
+.curso-nombre {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #193B63;
+}
+
+/* Estado de inscripción */
+.curso-estado {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #198754;
+    -fx-background-color: #E5F5EC;
+    -fx-background-radius: 10px;
+    -fx-padding: 6px 12px;
+}
+
+/* Descripción */
+.curso-descripcion {
+    -fx-font-size: 14px;
+    -fx-text-fill: #63758A;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 3px;
+}
+
+/* Contenedor de textos */
+.curso-info {
+    -fx-spacing: 12px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Imagen del curso */
+.curso-imagen {
+    -fx-opacity:1;
+    -fx-background-color: #2864E8;
+}
+
+/* Botón entrar */
+.boton-entrar {
+    -fx-background-color: #2864E8;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 22px;
+    -fx-cursor: hand;
+}
+
+.boton-entrar:hover {
+    -fx-background-color: #174FC7;
+}
+
+/* Separación de los cursos */
+.grid-cursos {
+    -fx-hgap: 22px;
+    -fx-vgap: 22px;
+    -fx-padding: 20px;
+}
+
+

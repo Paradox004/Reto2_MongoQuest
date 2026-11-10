@@ -34,39 +34,38 @@ public class InicioSesionController {
     @FXML
     private Button invitadoButton;
 
-    UsuarioDAO dao=new UsuarioDAO();
-    
+    UsuarioDAO dao = new UsuarioDAO();
+
     @FXML
     private void iniciarSesion(ActionEvent event) {
 
-        Usuario usuario=dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
-        if(usuario !=null){
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Credenciales Correctas");
-        alerta.setHeaderText("Inicio de sesión correcto");
-        alerta.setContentText("Las credenciales coinciden.");
-        alerta.showAndWait();
+        Usuario usuario = dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+        if (usuario != null) {
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+            alerta.setTitle("Credenciales Correctas");
+            alerta.setHeaderText("Inicio de sesión correcto");
+            alerta.setContentText("Las credenciales coinciden.");
+            alerta.showAndWait();
             try {
                 FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/view/seleccionCurso.fxml")
-            );
+                        App.class.getResource("/view/seleccionCurso.fxml")
+                );
                 Parent root = loader.load();
                 SeleccionCursoController controller = loader.getController();
                 controller.cargarCursos(usuario.getId());
                 App.scene.setRoot(root);
-                
+
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
-        }
-        else{
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Error");
-        alerta.setHeaderText("Inicio de sesión incorrecto");
-        alerta.setContentText("El usuario o la contraseña no son correctos.");
-        alerta.showAndWait();
-        emailField.setText("");
-        contrasenaField.setText("");
+        } else {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("Inicio de sesión incorrecto");
+            alerta.setContentText("El usuario o la contraseña no son correctos.");
+            alerta.showAndWait();
+            emailField.setText("");
+            contrasenaField.setText("");
         }
     }
 
@@ -78,9 +77,9 @@ public class InicioSesionController {
             System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-        
+
     @FXML
     private void entradaInvitado(ActionEvent event) {
     }
-    
+
 }

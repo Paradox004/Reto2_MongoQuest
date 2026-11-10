@@ -1,156 +1,232 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package tonguely.Controller;
 
-import tonguely.Controller.InicioSesionController;
-import tonguely.Controller.ActividadesController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import org.bson.types.ObjectId;
+
+import tonguely.Main.App;
 import tonguely.modelo.Curso;
 import tonguely.modelo.Inscripciones;
-import org.bson.types.ObjectId;
-import tonguely.Main.App;
 import tonguely.DAO.CursoDAO;
 import tonguely.DAO.InscripcionesDAO;
 
-/**
- * FXML Controller class
- *
- * @author songo
- */
-public class SeleccionCursoController implements Initializable {
+public class SeleccionCursoController {
 
     @FXML
     private GridPane gridCursos;
 
-    private final InscripcionesDAO inscripcionesDAO =new InscripcionesDAO();
+    private final InscripcionesDAO inscripcionesDAO
+            = new InscripcionesDAO();
 
-    private final CursoDAO cursoDAO = new CursoDAO();
-    
-    
+    private final CursoDAO cursoDAO
+            = new CursoDAO();
+
+    private ObjectId idEstudiante1;
+
     public void cargarCursos(ObjectId idEstudiante) {
 
-    gridCursos.getChildren().clear();
+        this.idEstudiante1 = idEstudiante;
 
-    // Obtener las inscripciones del alumno
-    List<Inscripciones> inscripciones =
-            inscripcionesDAO.buscarPorEstudiante(idEstudiante);
+        gridCursos.getChildren().clear();
 
-    int columna = 0;
-    int fila = 0;
+        List<Inscripciones> inscripciones
+                = inscripcionesDAO.buscarPorEstudiante(idEstudiante);
 
-    for (Inscripciones inscripcion : inscripciones) {
+        int columna = 0;
+        int fila = 0;
 
-        // Obtener el curso correspondiente
-        Curso curso = cursoDAO.buscarPorId(
-                inscripcion.getIdCurso());
+        for (Inscripciones inscripcion : inscripciones) {
 
-        if (curso == null) {
-            continue;
-        }
-
-        // Crear la tarjeta
-        VBox tarjeta = new VBox(10);
-        tarjeta.setPrefSize(230, 180);
-        tarjeta.setMinSize(200, 160);
-        tarjeta.setPadding(new Insets(15));
-
-        tarjeta.setStyle(
-            "-fx-background-color: #EAF2F8;" +
-            "-fx-background-radius: 15;" +
-            "-fx-border-radius: 15;" +
-            "-fx-border-color: #C5D6E5;"
-        );
-
-        // Nombre del curso
-        Label nombre = new Label(curso.getNombre());
-        nombre.setStyle(
-            "-fx-font-size: 18px;" +
-            "-fx-font-weight: bold;"
-        );
-
-        // Estado de inscripción
-        Label estado = new Label("Inscrito");
-        estado.setStyle("-fx-text-fill: green;");
-
-        // Botón para entrar al curso
-        Button entrar = new Button("Entrar al curso");
-
-        entrar.setOnAction(e -> {
-            System.out.println("Entrando al curso: " + curso.getNombre());
-            
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/view/actividades.fxml")
+            Curso curso = cursoDAO.buscarPorId(
+                    inscripcion.getIdCurso()
             );
-                Parent root = loader.load();
-                ActividadesController controller = loader.getController();
-                controller.setCurso(curso);
-                App.scene.setRoot(root);
-                
-            } catch (IOException ex) {
-                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
+            if (curso == null) {
+                continue;
             }
-        });
 
-        tarjeta.getChildren().addAll(
-            nombre,estado,entrar
-        );
+            // TARJETA PRINCIPAL
+            HBox tarjeta = new HBox(20);
+            tarjeta.getStyleClass().add("curso-card");
 
-        // Añadir tarjeta al GridPane
-        gridCursos.add(tarjeta, columna, fila);
+            tarjeta.setPrefSize(520, 210);
+            tarjeta.setMinSize(520, 210);
 
-        // Organizar en dos columnas
-        columna++;
+            // CONTENEDOR DE TEXTOS
+            VBox informacion = new VBox(12);
+            informacion.getStyleClass().add("curso-info");
 
-        if (columna == 2) {
-            columna = 0;
-            fila++;
+            // Nombre
+            Label nombre = new Label(curso.getNombre());
+            nombre.getStyleClass().add("curso-nombre");
+
+            // Estado
+            Label estado = new Label("Inscrito");
+            estado.getStyleClass().add("curso-estado");
+
+            // Descripción desde MongoDB
+            String textoDescripcion = curso.getDescripcion();
+
+            if (textoDescripcion == null
+                    || textoDescripcion.trim().isEmpty()) {
+                textoDescripcion = "Este curso todavía no tiene descripción.";
+            }
+
+            Label descripcion = new Label(textoDescripcion);
+            descripcion.getStyleClass().add("curso-descripcion");
+            descripcion.setMaxWidth(300);
+
+            // Botón
+            Button entrar = new Button("Entrar al curso");
+
+            entrar.getStyleClass().add("boton-entrar");
+
+            entrar.setOnAction(e -> {
+
+                try {
+
+                    FXMLLoader loader = new FXMLLoader(
+                            App.class.getResource(
+                                    "/view/actividades.fxml"
+                            )
+                    );
+
+                    Parent root = loader.load();
+
+                    ActividadesController controller
+                            = loader.getController();
+
+                    controller.setCurso(curso, idEstudiante1);
+
+                    App.scene.setRoot(root);
+
+                } catch (IOException ex) {
+
+                    ex.printStackTrace();
+
+                }
+            });
+
+            // Añadimos los textos
+            informacion.getChildren().addAll(
+                    nombre,
+                    estado,
+                    descripcion,
+                    entrar
+            );
+
+            HBox.setHgrow(informacion, Priority.ALWAYS);
+
+            // IMAGEN DEL CURSO
+            ImageView imagen = new ImageView();
+
+            imagen.setFitWidth(170);
+            imagen.setFitHeight(145);
+            imagen.setPreserveRatio(true);
+            imagen.setSmooth(true);
+
+            // Reservar siempre el espacio de la imagen
+            StackPane contenedorImagen = new StackPane();
+
+            contenedorImagen.setMinSize(170, 145);
+            contenedorImagen.setPrefSize(170, 145);
+            contenedorImagen.setMaxSize(170, 145);
+
+            // Cargar fotografía
+            String rutaFoto = curso.getFoto();
+
+            System.out.println("Ruta de imagen MongoDB: " + rutaFoto);
+
+            Image foto = cargarImagen(rutaFoto);
+
+            imagen.setImage(foto);
+
+            contenedorImagen.getChildren().add(imagen);
+
+            // Añadir imagen a la tarjeta
+            HBox.setHgrow(contenedorImagen, Priority.NEVER);
+
+            // Colocar textos e imagen
+            tarjeta.getChildren().clear();
+            tarjeta.getChildren().addAll(informacion, contenedorImagen);
+
+            // Añadir al GridPane
+            gridCursos.add(tarjeta, columna, fila);
+
+            columna++;
+
+            if (columna == 2) {
+                columna = 0;
+                fila++;
+            }
         }
     }
-}
 
-    private void abrirCurso(Curso curso) {
+    // MÉTODO PARA CARGAR LAS IMÁGENES
+    private Image cargarImagen(String ruta) {
 
-    try {
+        // Si no hay ruta, utilizar imagen predeterminada
+        if (ruta == null || ruta.isBlank()) {
+            ruta = "/img/curso-default.png";
+        }
 
-        FXMLLoader loader = new FXMLLoader(
-            App.class.getResource("/view/Actividades.fxml")
+        // Normalizar ruta
+        if (!ruta.startsWith("/")) {
+            ruta = "/" + ruta;
+        }
+
+        System.out.println("Buscando imagen: " + ruta);
+
+        URL recurso = getClass().getResource(ruta);
+
+        // Si no encuentra la imagen, utilizar la predeterminada
+        if (recurso == null) {
+
+            System.out.println("No se encuentra: " + ruta);
+
+            recurso = getClass().getResource(
+                    "/img/curso-default.png"
+            );
+        }
+
+        // Comprobar que existe la imagen predeterminada
+        if (recurso == null) {
+            System.out.println("Tampoco se encuentra la imagen predeterminada");
+            return null;
+        }
+
+        Image imagen = new Image(
+                recurso.toExternalForm(),
+                false
         );
 
-        Parent root = loader.load();
+        if (imagen.isError()) {
+            System.out.println(
+                    "Error cargando imagen: "
+                    + imagen.getException()
+            );
 
-        ActividadesController controller =
-            loader.getController();
+            return null;
+        }
 
-        controller.setCurso(curso);
+        System.out.println("Imagen cargada: " + recurso);
 
-        App.scene.setRoot(root);
-
-    } catch (IOException e) {
-        e.printStackTrace();
+        return imagen;
     }
-}
-    /**
-     * Initializes the controller class.
-     */
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
-  
+
 }

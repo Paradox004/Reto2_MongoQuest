@@ -4,7 +4,6 @@
  */
 package tonguely.DAO;
 
-import tonguely.DAO.ConexionMongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -16,7 +15,7 @@ import org.bson.types.ObjectId;
  * @author songo
  */
 public class CursoDAO {
-        private MongoCollection<Curso> coleccion;
+        private final MongoCollection<Curso> coleccion;
     
         public CursoDAO(){
         MongoDatabase bd = ConexionMongo.conectar();
