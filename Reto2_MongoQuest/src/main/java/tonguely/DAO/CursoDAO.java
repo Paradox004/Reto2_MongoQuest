@@ -16,7 +16,7 @@ import tonguely.modelo.Curso;
 /**
  * Acceso a la colección "Cursos" de MongoDB.
  *
- * @author songo
+ * @author anartz
  */
 public class CursoDAO {
 

@@ -20,7 +20,7 @@ import tonguely.Excepciones.TonguelyException;
 
 /**
  *
- * @author songo
+ * @author anartz
  */
 public class InicioSesionController {
 

@@ -21,6 +21,8 @@ import tonguely.modelo.Usuario;
  * Cada método registra en el log si la operación ha ido bien o mal y,
  * si MongoDB falla, lanza una {@link ConexionException} para que el
  * controlador muestre el error al usuario.
+ *
+ * @author anartz
  */
 public class UsuarioDAO {
 

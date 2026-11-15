@@ -15,7 +15,7 @@ import tonguely.modelo.Actividades;
 /**
  * Acceso a la colección "Actividades" de MongoDB.
  *
- * @author songo
+ * @author anartz
  */
 public class ActividadesDAO {
 

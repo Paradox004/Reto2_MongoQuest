@@ -16,7 +16,7 @@ import tonguely.modelo.Inscripciones;
 /**
  * Acceso a la colección "Inscripciones" de MongoDB.
  *
- * @author songo
+ * @author anartz
  */
 public class InscripcionesDAO {
 

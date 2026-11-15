@@ -1,18 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package tonguely.Controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -21,35 +13,46 @@ import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
 import tonguely.Excepciones.DatoDuplicadoException;
 import tonguely.Excepciones.TonguelyException;
+
 /**
- * FXML Controller class
+ * Controlador encargado de gestionar el registro de usuarios.
  *
- * @author songo
+ * @author anartz
  */
-public class RegistroController implements Initializable {
+public class RegistroController {
 
-
+    /** Campo del correo electrónico. */
     @FXML
     private TextField correoField;
+
+    /** Campo de la contraseña. */
     @FXML
     private PasswordField contrasenaField;
+
+    /** Botón para crear un usuario. */
     @FXML
     private Button crearButton;
+
+    /** Botón para iniciar sesión. */
     @FXML
     private Button iniciarButton;
+
+    /** Botón para acceder como invitado. */
     @FXML
     private Button invitadoButton;
+
+    /** Campo del nombre del usuario. */
     @FXML
     private TextField nombreField;
-    UsuarioDAO udao=new UsuarioDAO();
+
+    /** DAO para gestionar los usuarios. */
+    UsuarioDAO udao = new UsuarioDAO();
+
     /**
-     * Initializes the controller class.
+     * Crea un nuevo usuario con los datos introducidos.
+     *
+     * @param event evento que ejecuta la creación del usuario.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
     @FXML
     private void creacionUsuario(ActionEvent event) {
         Usuario usuario = new Usuario();
@@ -93,7 +96,12 @@ public class RegistroController implements Initializable {
             alerta.showAndWait();
         }
     }
-    
+
+    /**
+     * Abre la ventana de inicio de sesión.
+     *
+     * @param event evento que ejecuta la acción.
+     */
     @FXML
     private void abrirIniciarVentana(ActionEvent event) {
         try {
@@ -103,6 +111,11 @@ public class RegistroController implements Initializable {
         }
     }
 
+    /**
+     * Abre la ventana de acceso como invitado.
+     *
+     * @param event evento que ejecuta la acción.
+     */
     @FXML
     private void abrirVentanaInvitado(ActionEvent event) {
     }

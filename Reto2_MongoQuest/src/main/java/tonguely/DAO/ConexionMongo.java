@@ -1,3 +1,4 @@
+
 package tonguely.DAO;
 
 import com.mongodb.client.MongoClient;
@@ -15,10 +16,22 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Clase encargada de gestionar la conexión con MongoDB.
+ *
+ * @author anartz
+ */
 public class ConexionMongo {
 
+    /** Cliente de conexión con MongoDB. */
     private static MongoClient cliente;
 
+    /**
+     * Establece la conexión con MongoDB y configura los codecs
+     * para trabajar con objetos Java.
+     *
+     * @return base de datos TonguelyDB.
+     */
     public static MongoDatabase conectar() {
 
         if (cliente == null) {
