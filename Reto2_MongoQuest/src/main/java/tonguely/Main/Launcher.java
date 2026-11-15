@@ -8,7 +8,7 @@ import tonguely.Main.App;
 
 /**
  *
- * @author songo
+ * @author anartz
  */
 public class Launcher {
     public static void main(String[] args){

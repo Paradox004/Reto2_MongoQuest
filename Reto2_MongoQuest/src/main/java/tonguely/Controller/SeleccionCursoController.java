@@ -1,3 +1,4 @@
+
 package tonguely.Controller;
 
 import java.io.IOException;
@@ -25,19 +26,33 @@ import tonguely.modelo.Inscripciones;
 import tonguely.DAO.CursoDAO;
 import tonguely.DAO.InscripcionesDAO;
 
+/**
+ * Controlador encargado de mostrar los cursos del estudiante.
+ *
+ * @author anartz
+ */
 public class SeleccionCursoController {
 
+    /** Panel donde se muestran los cursos. */
     @FXML
     private GridPane gridCursos;
 
+    /** DAO para gestionar las inscripciones. */
     private final InscripcionesDAO inscripcionesDAO
             = new InscripcionesDAO();
 
+    /** DAO para gestionar los cursos. */
     private final CursoDAO cursoDAO
             = new CursoDAO();
 
+    /** Identificador del estudiante. */
     private ObjectId idEstudiante1;
 
+    /**
+     * Carga los cursos en los que está inscrito el estudiante.
+     *
+     * @param idEstudiante identificador del estudiante.
+     */
     public void cargarCursos(ObjectId idEstudiante) {
 
         this.idEstudiante1 = idEstudiante;
@@ -177,7 +192,12 @@ public class SeleccionCursoController {
         }
     }
 
-    // MÉTODO PARA CARGAR LAS IMÁGENES
+    /**
+     * Carga la imagen del curso a partir de su ruta.
+     *
+     * @param ruta ruta de la imagen.
+     * @return imagen cargada o null si no se encuentra.
+     */
     private Image cargarImagen(String ruta) {
 
         // Si no hay ruta, utilizar imagen predeterminada
