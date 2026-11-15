@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,6 +25,7 @@ import tonguely.modelo.Curso;
 import tonguely.modelo.Inscripciones;
 import tonguely.DAO.CursoDAO;
 import tonguely.DAO.InscripcionesDAO;
+import tonguely.Excepciones.TonguelyException;
 
 public class SeleccionCursoController {
 
@@ -44,17 +46,29 @@ public class SeleccionCursoController {
 
         gridCursos.getChildren().clear();
 
-        List<Inscripciones> inscripciones
-                = inscripcionesDAO.buscarPorEstudiante(idEstudiante);
+        // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa
+        List<Inscripciones> inscripciones;
+        try {
+            inscripciones = inscripcionesDAO.buscarPorEstudiante(idEstudiante);
+        } catch (TonguelyException e) {
+            mostrarError(e);
+            return;
+        }
 
         int columna = 0;
         int fila = 0;
 
         for (Inscripciones inscripcion : inscripciones) {
 
-            Curso curso = cursoDAO.buscarPorId(
-                    inscripcion.getIdCurso()
-            );
+            // Se asigna una sola vez, así sigue siendo "efectivamente final"
+            // y se puede usar dentro de la lambda del botón
+            Curso curso;
+            try {
+                curso = cursoDAO.buscarPorId(inscripcion.getIdCurso());
+            } catch (TonguelyException e) {
+                mostrarError(e);
+                return;
+            }
 
             if (curso == null) {
                 continue;
@@ -175,6 +189,19 @@ public class SeleccionCursoController {
                 fila++;
             }
         }
+    }
+
+    /**
+     * Muestra al usuario un error que viene de la capa de datos.
+     *
+     * @param e excepción propia con el mensaje para el usuario
+     */
+    private void mostrarError(TonguelyException e) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("No se han podido cargar los cursos");
+        alerta.setContentText(e.getMessage());
+        alerta.showAndWait();
     }
 
     // MÉTODO PARA CARGAR LAS IMÁGENES

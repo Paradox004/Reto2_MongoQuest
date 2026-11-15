@@ -52,6 +52,9 @@ secrets.properties
 *.log
 logs/
 log/
+# Excepción: el paquete de código tonguely.Log sí se versiona
+# (en Windows Git no distingue mayúsculas y "log/" también lo ignoraría)
+!**/src/main/java/**/Log/
 
 # ===== Volcados y datos locales de MongoDB =====
 data/db/

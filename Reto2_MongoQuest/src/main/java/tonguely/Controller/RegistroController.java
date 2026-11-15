@@ -19,6 +19,8 @@ import javafx.scene.control.TextField;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
+import tonguely.Excepciones.DatoDuplicadoException;
+import tonguely.Excepciones.TonguelyException;
 /**
  * FXML Controller class
  *
@@ -56,27 +58,39 @@ public class RegistroController implements Initializable {
         usuario.setContraseña(contrasenaField.getText());
         usuario.setRacha(0);
         usuario.setCursos(new ArrayList<>());
-        if(udao.crearUsuario(usuario)){
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Usuario creado con exito");
-        alerta.setHeaderText("Usuario creado");
-        alerta.setContentText("Usuario creado con exito!");
-        alerta.showAndWait();
+        try {
+            // 1. Intentar crear el usuario (el DAO registra el resultado en el log)
+            udao.crearUsuario(usuario);
+
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Usuario creado con exito");
+            alerta.setHeaderText("Usuario creado");
+            alerta.setContentText("Usuario creado con exito!");
+            alerta.showAndWait();
             try {
                 App.setRoot("inicioSesion_1");
             } catch (IOException ex) {
                 System.getLogger(RegistroController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
-        }
-        else{
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Error");
-        alerta.setHeaderText("Creacion del usuario fallida");
-        alerta.setContentText("Ya existe un usuario con ese mail");
-        alerta.showAndWait();
-        nombreField.setText("");
-        correoField.setText("");
-        contrasenaField.setText("");
+
+        } catch (DatoDuplicadoException e) {
+            // 2. Email repetido: error del usuario, se limpian los campos para que lo corrija
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("Creacion del usuario fallida");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
+            nombreField.setText("");
+            correoField.setText("");
+            contrasenaField.setText("");
+
+        } catch (TonguelyException e) {
+            // 3. Cualquier otro error (MongoDB caído...): se avisa sin borrar lo escrito
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("Creacion del usuario fallida");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
         }
     }
     

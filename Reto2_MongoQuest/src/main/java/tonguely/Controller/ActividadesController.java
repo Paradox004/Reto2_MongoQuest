@@ -20,6 +20,7 @@ import tonguely.modelo.Actividades;
 import tonguely.modelo.Curso;
 import org.bson.types.ObjectId;
 import tonguely.DAO.ActividadesDAO;
+import tonguely.Excepciones.TonguelyException;
 import tonguely.Main.App;
 
 /**
@@ -39,13 +40,25 @@ public class ActividadesController {
     private Label labelProgreso;
 
     public void setCurso(Curso curso, ObjectId idEstudiante) {
-        actividades = dao.actividadesCurso(curso.getId());
+        // Se guardan antes de mostrar nada: el botón "Volver" necesita idEstudiante
+        this.curso = curso;
+        this.idEstudiante = idEstudiante;
+
+        // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa
+        try {
+            actividades = dao.actividadesCurso(curso.getId());
+        } catch (TonguelyException e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("No se han podido cargar las actividades");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
+            actividades = new ArrayList<>();
+        }
         posicion = 0;
         System.out.println("Curso: " + curso.getNombre());
         System.out.println("Número de actividades: " + actividades.size());
         mostrarActividad();
-        this.curso = curso;
-        this.idEstudiante = idEstudiante;
     }
 
     private void mostrarActividad() {

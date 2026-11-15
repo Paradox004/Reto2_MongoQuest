@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
+import tonguely.Excepciones.TonguelyException;
 
 /**
  *
@@ -39,7 +40,18 @@ public class InicioSesionController {
     @FXML
     private void iniciarSesion(ActionEvent event) {
 
-        Usuario usuario = dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+        // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa al usuario
+        Usuario usuario;
+        try {
+            usuario = dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+        } catch (TonguelyException e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("No se ha podido iniciar sesión");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
+            return;
+        }
         if (usuario != null) {
             Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
             alerta.setTitle("Credenciales Correctas");
