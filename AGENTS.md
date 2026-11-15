@@ -88,6 +88,35 @@ Si añades un paquete nuevo, recuerda declararlo en `module-info.java`: `opens` 
 - Los nombres de colecciones y campos no coinciden entre el código y la documentación.
 - Las contraseñas se guardan en texto plano y el registro no valida los datos.
 
+## Estado actual y próximos pasos
+
+Esta sección sirve para retomar el trabajo desde cualquier equipo o con cualquier asistente sin repetir el análisis del proyecto.
+
+- **Nosotros:** al terminar un paso, actualizad la tabla y la fecha. Va en el mismo commit que el código.
+- **Asistentes de IA:** leed esta sección al empezar para saber por dónde seguir. Al cerrar un paso, proponed cómo actualizarla, pero no la cambiéis sin que os lo pidamos.
+
+**Última actualización:** 2026-11-08 (Christian)
+
+| Parte | Responsable | Estado | Siguiente paso |
+|---|---|---|---|
+| Actividades (TEST y HUECO) | Christian | Paso 1 de 6 en curso | Unificar nombres de campos entre modelo, DAO y Mongo |
+| Diagrama de navegación de vistas | _por completar_ | En proceso | _por completar_ |
+| SGE (Odoo y BPMN) | _por completar_ | Hecho | Subir el `.bpmn`, su imagen y la documentación a `docs/` |
+| _Resto de partes_ | _por completar_ | _por completar_ | _por completar_ |
+
+### Hoja de ruta de las actividades
+
+1. [ ] **Datos y DAO.**
+   - En el modelo `Actividades`: usar los mismos nombres en camelCase que en Mongo (`enunciado`, `respuestaCorrecta`) y añadir `orden`.
+   - En `ActividadesDAO`: filtrar por `idCurso` y ordenar con `Sorts.ascending("orden")`.
+   - Insertar en Mongo una actividad TEST y otra HUECO de prueba.
+   - Punto de control: salen 2 actividades, sin campos a `null` y en orden.
+2. [ ] **Interfaz `EjercicioView`** (`getVista()`, `getRespuestaUsuario()`, `bloquear()`) y **componente `TestView`** (FXML con `fx:root`, `RadioButton` en un `ToggleGroup`).
+3. [ ] **Componente `HuecoView`** (enunciado partido por el hueco y un `TextField`).
+4. [ ] **`EjercicioFactory`** con el enum `TipoEjercicio` y una excepción propia para los tipos desconocidos.
+5. [ ] **`ActividadService.corregir(actividad, respuesta)`** con normalización (`java.text.Normalizer`) y sus tests en JUnit.
+6. [ ] **Flujo en `ActividadesController`**: cargar las actividades, mostrar la actual, comprobar la respuesta, pasar a la siguiente y mostrar el resultado final.
+
 ## Lo que más puntúa en las rúbricas
 
 Úsalo para priorizar y para explicar por qué conviene hacer algo de una manera.
