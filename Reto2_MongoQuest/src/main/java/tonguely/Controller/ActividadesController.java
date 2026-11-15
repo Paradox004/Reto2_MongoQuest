@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package tonguely.Controller;
 
 import java.io.IOException;
@@ -23,21 +20,41 @@ import tonguely.DAO.ActividadesDAO;
 import tonguely.Main.App;
 
 /**
+ * Controlador encargado de mostrar y gestionar las actividades de un curso.
  *
- * @author songo
+ * @author anartz
  */
 public class ActividadesController {
 
+    /** Lista de actividades del curso. */
     ArrayList<Actividades> actividades = new ArrayList<Actividades>();
+
+    /** Curso seleccionado. */
     Curso curso;
+
+    /** Identificador del estudiante. */
     ObjectId idEstudiante;
+
+    /** DAO para acceder a las actividades. */
     ActividadesDAO dao = new ActividadesDAO();
+
+    /** Posición de la actividad actual. */
     int posicion;
+
+    /** Contenedor de las actividades. */
     @FXML
     private VBox contenedorActividades;
+
+    /** Etiqueta del progreso. */
     @FXML
     private Label labelProgreso;
 
+    /**
+     * Establece el curso y carga sus actividades.
+     *
+     * @param curso curso seleccionado.
+     * @param idEstudiante identificador del estudiante.
+     */
     public void setCurso(Curso curso, ObjectId idEstudiante) {
         actividades = dao.actividadesCurso(curso.getId());
         posicion = 0;
@@ -48,6 +65,9 @@ public class ActividadesController {
         this.idEstudiante = idEstudiante;
     }
 
+    /**
+     * Muestra la actividad actual y comprueba las respuestas del estudiante.
+     */
     private void mostrarActividad() {
         System.out.println("Mostrando actividad...");
         System.out.println("Actividades: " + actividades.size());
@@ -59,7 +79,7 @@ public class ActividadesController {
             Label finalizado = new Label("¡Has terminado las actividades!");
             finalizado.getStyleClass().add("finish-label");
             contenedorActividades.getChildren().add(finalizado);
-            
+
             Button volverButton = new Button("Volver a los cursos");
             volverButton.getStyleClass().add("primary-button");
             contenedorActividades.getChildren().add(volverButton);
@@ -90,6 +110,7 @@ public class ActividadesController {
         pregunta.getStyleClass().add("question-label");
         contenedorActividades.getChildren().add(pregunta);
 
+        // Mostrar preguntas de tipo test.
         if (ac.getTipo().equalsIgnoreCase("test")) {
 
             ArrayList<String> opciones = ac.getOpciones();
@@ -136,6 +157,8 @@ public class ActividadesController {
             });
 
             contenedorActividades.getChildren().add(comprobarButton);
+
+        // Mostrar preguntas de respuesta escrita.
         } else if (ac.getTipo().equalsIgnoreCase("pregunta")) {
 
             TextField respuestaField = new TextField();
@@ -173,5 +196,4 @@ public class ActividadesController {
             });
         }
     }
-
 }

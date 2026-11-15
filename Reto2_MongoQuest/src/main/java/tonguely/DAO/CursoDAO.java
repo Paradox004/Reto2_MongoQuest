@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package tonguely.DAO;
 
 import com.mongodb.client.MongoCollection;
@@ -11,21 +8,34 @@ import tonguely.modelo.Curso;
 import org.bson.types.ObjectId;
 
 /**
+ * DAO encargado de gestionar los cursos en MongoDB.
  *
- * @author songo
+ * @author anartz
  */
 public class CursoDAO {
-        private final MongoCollection<Curso> coleccion;
-    
-        public CursoDAO(){
+
+    /** Colección de cursos de MongoDB. */
+    private final MongoCollection<Curso> coleccion;
+
+    /**
+     * Constructor que establece la conexión con MongoDB
+     * y obtiene la colección de cursos.
+     */
+    public CursoDAO() {
         MongoDatabase bd = ConexionMongo.conectar();
 
         coleccion = bd.getCollection("Cursos", Curso.class);
     }
-        public Curso buscarPorId(ObjectId idCurso) {
+
+    /**
+     * Busca un curso mediante su identificador.
+     *
+     * @param idCurso identificador del curso.
+     * @return curso encontrado o null si no existe.
+     */
+    public Curso buscarPorId(ObjectId idCurso) {
 
         return coleccion.find(
-        Filters.eq("_id", idCurso)).first();
+                Filters.eq("_id", idCurso)).first();
     }
-       
 }

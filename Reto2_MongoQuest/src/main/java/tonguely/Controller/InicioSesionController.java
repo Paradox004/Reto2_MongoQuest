@@ -19,7 +19,7 @@ import tonguely.DAO.UsuarioDAO;
 
 /**
  *
- * @author songo
+ * @author anartz
  */
 public class InicioSesionController {
 
