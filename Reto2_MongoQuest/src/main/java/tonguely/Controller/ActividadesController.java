@@ -65,11 +65,7 @@ public class ActividadesController {
         try {
             actividades = dao.actividadesCurso(curso.getId());
         } catch (TonguelyException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("No se han podido cargar las actividades");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
+            Alertas.error("No se han podido cargar las actividades", e.getMessage());
             actividades = new ArrayList<>();
         }
         posicion = 0;
@@ -141,9 +137,7 @@ public class ActividadesController {
             comprobarButton.setOnAction(e -> {
 
                 if (grupo.getSelectedToggle() == null) {
-                    Alert alerta = new Alert(Alert.AlertType.WARNING);
-                    alerta.setContentText("Selecciona una respuesta.");
-                    alerta.showAndWait();
+                    Alertas.advertencia("Selecciona una respuesta.");
                     return;
                 }
 
@@ -152,20 +146,14 @@ public class ActividadesController {
 
                 if (seleccionada.getText().equalsIgnoreCase(ac.getRespuesta_correcta())) {
 
-                    Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-                    alerta.setTitle("¡Muy bien!");
-                    alerta.setContentText("¡Respuesta correcta!");
-                    alerta.showAndWait();
+                    Alertas.informacion("¡Muy bien!", null, "¡Respuesta correcta!");
 
                     posicion++;
                     mostrarActividad();
 
                 } else {
 
-                    Alert alerta = new Alert(Alert.AlertType.ERROR);
-                    alerta.setTitle("Respuesta incorrecta");
-                    alerta.setContentText("Respuesta incorrecta");
-                    alerta.showAndWait();
+                    Alertas.mostrar(Alert.AlertType.ERROR, "Respuesta incorrecta", null, "Respuesta incorrecta");
                 }
             });
 
@@ -183,28 +171,20 @@ public class ActividadesController {
             comprobarButton.setOnAction(e -> {
 
                 if (respuestaField == null) {
-                    Alert alerta = new Alert(Alert.AlertType.WARNING);
-                    alerta.setContentText("Selecciona una respuesta.");
-                    alerta.showAndWait();
+                    Alertas.advertencia("Selecciona una respuesta.");
                     return;
                 }
 
                 if (respuestaField.getText().equalsIgnoreCase(ac.getRespuesta_correcta())) {
 
-                    Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-                    alerta.setTitle("¡Muy bien!");
-                    alerta.setContentText("¡Respuesta correcta!");
-                    alerta.showAndWait();
+                    Alertas.informacion("¡Muy bien!", null, "¡Respuesta correcta!");
 
                     posicion++;
                     mostrarActividad();
 
                 } else {
 
-                    Alert alerta = new Alert(Alert.AlertType.ERROR);
-                    alerta.setTitle("Respuesta incorrecta");
-                    alerta.setContentText("Respuesta incorrecta");
-                    alerta.showAndWait();
+                    Alertas.mostrar(Alert.AlertType.ERROR, "Respuesta incorrecta", null, "Respuesta incorrecta");
                 }
             });
         }
