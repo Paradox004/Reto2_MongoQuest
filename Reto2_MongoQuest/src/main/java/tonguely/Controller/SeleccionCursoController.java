@@ -7,7 +7,6 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -65,7 +64,7 @@ public class SeleccionCursoController {
         try {
             inscripciones = inscripcionesDAO.buscarPorEstudiante(idEstudiante);
         } catch (TonguelyException e) {
-            mostrarError(e);
+            Alertas.error("No se han podido cargar los cursos", e.getMessage());
             return;
         }
 
@@ -80,7 +79,7 @@ public class SeleccionCursoController {
             try {
                 curso = cursoDAO.buscarPorId(inscripcion.getIdCurso());
             } catch (TonguelyException e) {
-                mostrarError(e);
+                Alertas.error("No se han podido cargar los cursos", e.getMessage());
                 return;
             }
 
@@ -203,19 +202,6 @@ public class SeleccionCursoController {
                 fila++;
             }
         }
-    }
-
-    /**
-     * Muestra al usuario un error que viene de la capa de datos.
-     *
-     * @param e excepción propia con el mensaje para el usuario
-     */
-    private void mostrarError(TonguelyException e) {
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Error");
-        alerta.setHeaderText("No se han podido cargar los cursos");
-        alerta.setContentText(e.getMessage());
-        alerta.showAndWait();
     }
 
     /**

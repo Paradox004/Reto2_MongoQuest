@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -65,11 +64,7 @@ public class RegistroController {
             // 1. Intentar crear el usuario (el DAO registra el resultado en el log)
             udao.crearUsuario(usuario);
 
-            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-            alerta.setTitle("Usuario creado con exito");
-            alerta.setHeaderText("Usuario creado");
-            alerta.setContentText("Usuario creado con exito!");
-            alerta.showAndWait();
+            Alertas.informacion("Usuario creado con exito", "Usuario creado", "Usuario creado con exito!");
             try {
                 App.setRoot("inicioSesion_1");
             } catch (IOException ex) {
@@ -78,22 +73,14 @@ public class RegistroController {
 
         } catch (DatoDuplicadoException e) {
             // 2. Email repetido: error del usuario, se limpian los campos para que lo corrija
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("Creacion del usuario fallida");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
+            Alertas.error("Creacion del usuario fallida", e.getMessage());
             nombreField.setText("");
             correoField.setText("");
             contrasenaField.setText("");
 
         } catch (TonguelyException e) {
             // 3. Cualquier otro error (MongoDB caído...): se avisa sin borrar lo escrito
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("Creacion del usuario fallida");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
+            Alertas.error("Creacion del usuario fallida", e.getMessage());
         }
     }
 

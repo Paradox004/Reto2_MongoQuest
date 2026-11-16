@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -45,19 +44,12 @@ public class InicioSesionController {
         try {
             usuario = dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
         } catch (TonguelyException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("No se ha podido iniciar sesión");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
+            Alertas.error("No se ha podido iniciar sesión", e.getMessage());
             return;
         }
         if (usuario != null) {
-            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-            alerta.setTitle("Credenciales Correctas");
-            alerta.setHeaderText("Inicio de sesión correcto");
-            alerta.setContentText("Las credenciales coinciden.");
-            alerta.showAndWait();
+            Alertas.informacion("Credenciales Correctas",
+                    "Inicio de sesión correcto", "Las credenciales coinciden.");
             try {
                 FXMLLoader loader = new FXMLLoader(
                         App.class.getResource("/view/seleccionCurso.fxml")
@@ -71,11 +63,7 @@ public class InicioSesionController {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         } else {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("Inicio de sesión incorrecto");
-            alerta.setContentText("El usuario o la contraseña no son correctos.");
-            alerta.showAndWait();
+            Alertas.error("Inicio de sesión incorrecto", "El usuario o la contraseña no son correctos.");
             emailField.setText("");
             contrasenaField.setText("");
         }
