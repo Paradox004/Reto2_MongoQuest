@@ -1,16 +1,23 @@
 package tonguely.Log;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import tonguely.Excepciones.ErrorLectura;
 import tonguely.Main.Sesion;
 
 /**
@@ -32,6 +39,9 @@ public final class GestorLog {
 
     /** Ruta del fichero de log, relativa a la carpeta desde la que se ejecuta la aplicación. */
     private static final String RUTA = "logs/tonguely.log";
+
+    /** Valor del campo "colección" cuando la operación es sobre el propio log y no sobre MongoDB. */
+    private static final String COLECCION_LOG = "log";
 
     /** Separador entre campos de una línea. */
     private static final String SEPARADOR = " | ";
@@ -146,6 +156,65 @@ public final class GestorLog {
                     .ofInstant(registro.getInstant(), ZoneId.systemDefault())
                     .format(FORMATO_FECHA);
             return fecha + SEPARADOR + registro.getMessage() + System.lineSeparator();
+        }
+    }
+
+    /**
+     * Lee el fichero de log y devuelve sus líneas convertidas en {@link EntradaLog}.
+     *
+     * Las líneas mal formadas se saltan y, al terminar, se registra un único
+     * aviso con cuántas se han ignorado. La propia consulta también queda
+     * registrada en el log.
+     *
+     * @return las entradas del log; lista vacía si el fichero todavía no existe
+     * @throws ErrorLectura si el fichero existe pero no se puede leer
+     */
+    public static List<EntradaLog> leer() throws ErrorLectura{
+        // Si todavía no se ha escrito nada, no es un error: el log está vacío
+        if (!Files.exists(Paths.get(RUTA))) {
+            return new ArrayList<>();
+        }
+
+        try {
+            List<String> lineas = Files.readAllLines(Paths.get(RUTA), StandardCharsets.UTF_8);
+            List<EntradaLog> entradas = lineas.stream()
+                        .map(linea -> parsear(linea))
+                        .filter(entrada -> entrada != null)
+                        .collect(Collectors.toList());
+
+            // Las líneas que faltan en "entradas" son las que parsear() ha descartado
+            int ignoradas = lineas.size() - entradas.size();
+            if (ignoradas > 0) {
+                registrarError(TipoOperacion.CONSULTAR, COLECCION_LOG,
+                        "Lectura del log: " + ignoradas + " líneas ignoradas por formato incorrecto");
+            }
+            registrar(TipoOperacion.CONSULTAR, COLECCION_LOG,
+                    "Lectura del log: " + entradas.size() + " entradas");
+
+            return entradas;
+        } catch (IOException e) {
+            throw new ErrorLectura("Ha surgido un error con la lectura del archivo.",e);
+        }
+    }
+    private static EntradaLog parsear(String linea){
+        if(linea != null){
+            String[] lineaParseada = linea.split(" \\| ",6);
+            if(lineaParseada.length == 6){
+                try{
+                    EntradaLog entrada = new EntradaLog(
+                        LocalDateTime.parse(lineaParseada[0], FORMATO_FECHA),
+                        lineaParseada[1], lineaParseada[2], lineaParseada[3],
+                        lineaParseada[4], lineaParseada[5]);
+                    return entrada;
+                }catch(DateTimeParseException e){
+                    return null;
+                }
+            }
+            else{
+                return null;
+            }
+        }else{
+            return null;
         }
     }
 }
