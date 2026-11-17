@@ -4,6 +4,7 @@
  */
 package tonguely.Controller;
 
+import tonguely.Excepciones.Alertas;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
@@ -52,12 +54,17 @@ public class InicioSesionController {
                     "Inicio de sesión correcto", "Las credenciales coinciden.");
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        App.class.getResource("/view/seleccionCurso.fxml")
+                App.class.getResource("/view/seleccionCurso.fxml")
                 );
                 Parent root = loader.load();
+                App.scene.setRoot(root);
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setWidth(1200);
+                stage.setHeight(750);
+                stage.centerOnScreen();
                 SeleccionCursoController controller = loader.getController();
                 controller.cargarCursos(usuario.getId());
-                App.scene.setRoot(root);
+                
 
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -80,6 +87,22 @@ public class InicioSesionController {
 
     @FXML
     private void entradaInvitado(ActionEvent event) {
+        try {
+                FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("/view/seleccionCurso.fxml")
+                );
+                Parent root = loader.load();
+                App.scene.setRoot(root);
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setWidth(1200);
+                stage.setHeight(750);
+                stage.centerOnScreen();
+                SeleccionCursoController controller = loader.getController();
+                controller.cargarTodosLosCursos();
+
+            } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
     }
 
 }

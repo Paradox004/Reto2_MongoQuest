@@ -6,6 +6,8 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import java.util.ArrayList;
+import java.util.List;
 
 import tonguely.Excepciones.ConexionException;
 import tonguely.Excepciones.TonguelyException;
@@ -48,4 +50,15 @@ public class CursoDAO {
             throw new ConexionException("No se ha podido cargar el curso.", e);
         }
     }
+    public ArrayList<Curso> cargarCursos() throws TonguelyException{
+        ArrayList<Curso> cursos = null;
+        try{
+            cursos=coleccion.find().into(new ArrayList<>());
+        } catch(MongoException e){
+            throw new ConexionException("No se ha podido cargar los cursos.", e);
+        }
+        return cursos;
+    }
 }
+    
+    
