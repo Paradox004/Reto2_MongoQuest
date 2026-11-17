@@ -99,7 +99,7 @@ public class ActividadesController {
                     );
                     Parent root = loader.load();
                     SeleccionCursoController controller = loader.getController();
-                    controller.cargarCursos(idEstudiante);
+                    controller.cargarCursos();
                     App.scene.setRoot(root);
 
                 } catch (IOException ex) {

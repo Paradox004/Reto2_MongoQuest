@@ -5,6 +5,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import tonguely.Excepciones.ConexionException;
@@ -73,4 +75,35 @@ public class InscripcionesDAO {
             throw new ConexionException("No se ha podido comprobar la inscripción.", e);
         }
     }
+    
+    public List<Inscripciones> buscarPorCursos(Collection<ObjectId> idsCursos) {
+        if (idsCursos == null || idsCursos.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return coleccion.find(Filters.in("idCurso", idsCursos)).into(new ArrayList<>());
+    }
+
+    public void inscribir(ObjectId idEstudiante, ObjectId idCurso) {
+        try {
+            if (estaInscrito(idEstudiante, idCurso)) {
+                return;
+            }
+        } catch (TonguelyException ex) {
+            System.getLogger(InscripcionesDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        Inscripciones ins = new Inscripciones();
+        ins.setIdEstudiante(idEstudiante);
+        ins.setIdCurso(idCurso);
+        ins.setProgreso(0);
+        ins.setFechaInicio(new Date());
+        ins.setEstado("En curso");
+        coleccion.insertOne(ins);
+    }
+
+    public void desinscribir(ObjectId idEstudiante, ObjectId idCurso) {
+        coleccion.deleteMany(Filters.and(
+                Filters.eq("idEstudiante", idEstudiante),
+                Filters.eq("idCurso", idCurso)));
+    }
+    
 }

@@ -1,5 +1,6 @@
 package tonguely.Main;
 
+import tonguely.modelo.Profesor;
 import tonguely.modelo.Usuario;
 
 /**
@@ -12,8 +13,8 @@ import tonguely.modelo.Usuario;
 public final class Sesion {
 
     /** Usuario conectado, o null si nadie ha iniciado sesión. */
-    private static Usuario usuarioActual;
-
+    public static Usuario usuarioActual;
+    public static Profesor profesorActual;
     /** Clase de utilidades: no se crean objetos de ella. */
     private Sesion() {
     }
