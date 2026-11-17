@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -17,9 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -183,8 +180,9 @@ public class GestionUsuariosController implements Initializable {
             });
             
             recalcular();
-        } catch (TonguelyException ex) {
-            System.getLogger(GestionUsuariosController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (TonguelyException e) {
+            // El DAO ya ha registrado el error en el log: aquí solo se avisa al usuario
+            Alertas.error("No se han podido cargar los usuarios", e.getMessage());
         }
     }
 
@@ -211,7 +209,7 @@ public class GestionUsuariosController implements Initializable {
     }
 
     // Cursos que imparte el profesor que ha iniciado sesión
-    private List<Curso> cursosDelProfesor() {
+    private List<Curso> cursosDelProfesor() throws TonguelyException {
         List<Curso> resultado = new ArrayList<Curso>();
         Profesor sesion = Sesion.profesorActual;
         if (sesion == null) {
@@ -231,37 +229,39 @@ public class GestionUsuariosController implements Initializable {
             }
         }
 
-        try {
-            for (Curso c : cursoDAO.cargarCursos()) {
-                boolean porNombre = nombres.contains(c.getNombre());
-                boolean porEmail = false;
-                if (c.getProfesores() != null) {
-                    for (Profesor p : c.getProfesores()) {
-                        if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(yo.getEmail())) {
-                            porEmail = true;
-                        }
+        for (Curso c : cursoDAO.cargarCursos()) {
+            boolean porNombre = nombres.contains(c.getNombre());
+            boolean porEmail = false;
+            if (c.getProfesores() != null) {
+                for (Profesor p : c.getProfesores()) {
+                    if (p.getEmail() != null && p.getEmail().equalsIgnoreCase(yo.getEmail())) {
+                        porEmail = true;
                     }
                 }
-                if (porNombre || porEmail) {
-                    resultado.add(c);
-                }
             }
-        } catch (TonguelyException ex) {
-            System.getLogger(GestionUsuariosController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            if (porNombre || porEmail) {
+                resultado.add(c);
+            }
         }
         return resultado;
     }
 
     private void recalcular() {
-        misCursos = cursosDelProfesor();
         alumnos.clear();
+        try {
+            misCursos = cursosDelProfesor();
 
-        List<ObjectId> ids = new ArrayList<ObjectId>();
-        for (Curso c : misCursos) {
-            ids.add(c.getId());
-        }
-        for (Inscripciones i : inscripcionesDAO.buscarPorCursos(ids)) {
-            alumnos.add(i.getIdEstudiante());
+            List<ObjectId> ids = new ArrayList<ObjectId>();
+            for (Curso c : misCursos) {
+                ids.add(c.getId());
+            }
+            for (Inscripciones i : inscripcionesDAO.buscarPorCursos(ids)) {
+                alumnos.add(i.getIdEstudiante());
+            }
+        } catch (TonguelyException e) {
+            // El DAO ya ha registrado el error en el log: aquí solo se avisa al usuario
+            Alertas.error("No se han podido cargar tus cursos y alumnos", e.getMessage());
+            misCursos = new ArrayList<Curso>();
         }
 
         tablaUsuarios.refresh();
@@ -289,8 +289,8 @@ public class GestionUsuariosController implements Initializable {
             for (Inscripciones i : inscripcionesDAO.buscarPorEstudiante(seleccionado.getId())) {
                 inscritos.add(i.getIdCurso());
             }
-        } catch (TonguelyException ex) {
-            System.getLogger(GestionUsuariosController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (TonguelyException e) {
+            Alertas.error("No se han podido cargar las inscripciones del usuario", e.getMessage());
         }
 
         List<Curso> comunes = new ArrayList<Curso>();
@@ -315,10 +315,14 @@ public class GestionUsuariosController implements Initializable {
     private void nuevoUsuario() {
         Curso curso = comboDisponibles.getSelectionModel().getSelectedItem();
         if (seleccionado == null || curso == null) {
-            aviso("Elige un curso de la lista desplegable.");
+            Alertas.advertencia("Elige un curso de la lista desplegable.");
             return;
         }
-        inscripcionesDAO.inscribir(seleccionado.getId(), curso.getId());
+        try {
+            inscripcionesDAO.inscribir(seleccionado.getId(), curso.getId());
+        } catch (TonguelyException e) {
+            Alertas.error("No se ha podido inscribir al usuario", e.getMessage());
+        }
         recalcular();
     }
 
@@ -327,24 +331,17 @@ public class GestionUsuariosController implements Initializable {
     private void eliminarUsuario() {
         Curso curso = listaComunes.getSelectionModel().getSelectedItem();
         if (seleccionado == null || curso == null) {
-            aviso("Selecciona un curso de la lista de cursos en común.");
+            Alertas.advertencia("Selecciona un curso de la lista de cursos en común.");
             return;
         }
-        Alert confirmar = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmar.setHeaderText(null);
-        confirmar.setContentText("¿Quitar a " + seleccionado.getNombre()
-                + " del curso " + curso.getNombre() + "?");
-        Optional<ButtonType> respuesta = confirmar.showAndWait();
-        if (respuesta.isPresent() && respuesta.get() == ButtonType.OK) {
-            inscripcionesDAO.desinscribir(seleccionado.getId(), curso.getId());
+        if (Alertas.confirmar("¿Quitar a " + seleccionado.getNombre()
+                + " del curso " + curso.getNombre() + "?")) {
+            try {
+                inscripcionesDAO.desinscribir(seleccionado.getId(), curso.getId());
+            } catch (TonguelyException e) {
+                Alertas.error("No se ha podido quitar al usuario del curso", e.getMessage());
+            }
             recalcular();
         }
-    }
-
-    private void aviso(String texto) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setHeaderText(null);
-        a.setContentText(texto);
-        a.showAndWait();
     }
 }

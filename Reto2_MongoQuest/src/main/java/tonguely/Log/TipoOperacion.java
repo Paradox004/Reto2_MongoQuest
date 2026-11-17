@@ -10,6 +10,8 @@ package tonguely.Log;
 public enum TipoOperacion {
     /** Intento de inicio de sesión (correcto o fallido). */
     LOGIN,
+    /** Cierre de sesión. */
+    LOGOUT,
     /** Lectura de datos de una colección. */
     CONSULTAR,
     /** Alta de un documento nuevo. */

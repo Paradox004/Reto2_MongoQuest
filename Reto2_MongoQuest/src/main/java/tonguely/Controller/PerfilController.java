@@ -98,8 +98,9 @@ public class PerfilController implements Initializable {
         try {
             tablaInscripciones.setItems(FXCollections.observableArrayList(
                     inscripcionesDAO.buscarPorEstudiante(u.getId())));
-        } catch (TonguelyException ex) {
-            System.getLogger(PerfilController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (TonguelyException e) {
+            // El DAO ya ha registrado el error en el log: aquí solo se avisa al usuario
+            Alertas.error("No se han podido cargar tus inscripciones", e.getMessage());
         }
     }
 
@@ -134,7 +135,7 @@ public class PerfilController implements Initializable {
 
     @FXML
     private void cerrarSesion() {
-        Sesion.usuarioActual = null;
+        Sesion.cerrar();
         try {
             App.setRoot("inicioSesion_1");
         } catch (IOException ex) {
