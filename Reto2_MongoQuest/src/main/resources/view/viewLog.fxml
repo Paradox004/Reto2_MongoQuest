@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<fx:root minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.ViewLogController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.ViewLogController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
          <padding>
@@ -53,4 +53,4 @@
          </children>
       </VBox>
    </center>
-</fx:root>
+</BorderPane>

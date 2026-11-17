@@ -1,7 +1,8 @@
 package tonguely.Excepciones;
 
 /**
- * Excepción personalizada para manejar errores de datos duplicados en la aplicación Tonguely.
+ * Se lanza cuando el fichero de log existe pero no se puede leer
+ * (sin permisos, bloqueado por otro programa o con una codificación distinta de UTF-8).
  */
 public class ErrorLectura extends TonguelyException {
     /**

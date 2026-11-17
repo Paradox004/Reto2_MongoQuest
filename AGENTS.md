@@ -112,7 +112,7 @@ Esta sección sirve para retomar el trabajo desde cualquier equipo o con cualqui
 
 | Parte | Responsable | Estado | Siguiente paso |
 |---|---|---|---|
-| Visor del log para el administrador | Christian | Paso 1 de 5 en curso | `EntradaLog` y `GestorLog.leer()` |
+| Visor del log para el administrador | Christian | Pasos 1 y 2 hechos (rama `funcionalidad/visor-log`) | Paso 3: `ViewLogController` (tipos de columnas, `initialize`) e incluir `viewLog.fxml` en `admin.fxml` |
 | Actividades (TEST y HUECO) | Christian | Paso 1 de 6 pendiente | Unificar nombres de campos entre modelo, DAO y Mongo |
 | Log en fichero (`GestorLog`) | _por completar_ | Hecho | Leerlo desde el visor |
 | Excepciones propias | _por completar_ | En marcha | Añadir subclases según se necesiten |
@@ -123,18 +123,19 @@ Esta sección sirve para retomar el trabajo desde cualquier equipo o con cualqui
 
 ### Hoja de ruta del visor del log
 
-Va en una pestaña "Registro" de `admin.fxml` (`<fx:include source="logs.fxml"/>`), con su propio `LogController`. Sirve para IL5.1 (ADT, el 10) y para IL6.3 (DIN, `TableView` con columnas de tipos distintos).
+Va en una pestaña "Registro" de `admin.fxml` (`<fx:include source="viewLog.fxml"/>`), con su propio `ViewLogController`. Sirve para IL5.1 (ADT, el 10) y para IL6.3 (DIN, `TableView` con columnas de tipos distintos).
 
 Decisiones tomadas:
 - La lectura va en `GestorLog`, que reutiliza la ruta, el separador y el formato de fecha.
-- `EntradaLog` va en `tonguely.Log`, con `fecha` como `LocalDateTime` y `tipo` como `String`.
+- `EntradaLog` va en `tonguely.Log`, con `fecha` como `LocalDateTime` y `tipo` como `String`. La lectura usa un stream con `parsear()`, que devuelve `null` para las líneas mal formadas.
+- La excepción de lectura es `ErrorLectura`; si el fichero no existe, `leer()` devuelve una lista vacía.
 - Las líneas mal formadas se saltan, y al final de cada lectura se registra una sola entrada con el número de líneas ignoradas.
 - La consulta del log se registra con `CONSULTAR`.
 - Los errores de lectura se lanzan como una subclase de `TonguelyException` y se muestran con `Alertas`.
 
-1. [ ] **`EntradaLog` y `GestorLog.leer()`.** Punto de control: un `main` temporal imprime el número de entradas, la primera separada en sus campos y el número de líneas ignoradas.
-2. [ ] **`logs.fxml` en Scene Builder**, con una tabla de 6 columnas y una barra de filtros, incluido en `admin.fxml`.
-3. [ ] **`LogController`**: cargar las entradas, con la más reciente arriba.
+1. [x] **`EntradaLog` y `GestorLog.leer()`.** Punto de control: un `main` temporal imprime el número de entradas, la primera separada en sus campos y el número de líneas ignoradas.
+2. [x] **`viewLog.fxml` en Scene Builder**, con una tabla de 6 columnas y una barra de filtros.
+3. [ ] **`ViewLogController`**: tipos de las columnas, cargar las entradas con la más reciente arriba e incluir `viewLog.fxml` en `admin.fxml`.
 4. [ ] **Filtros** (tipo, "Solo errores", búsqueda) con `FilteredList` y botón "Actualizar".
 5. [ ] **Extras:** filas de error en rojo con `setRowFactory` y menú contextual "Copiar línea".
 
