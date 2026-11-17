@@ -1,6 +1,5 @@
 package tonguely.Controller;
-
-import tonguely.Excepciones.Alertas;
+import tonguely.Main.Sesion;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -65,130 +64,10 @@ public class SeleccionCursoController {
      *
      * @param idEstudiante identificador del estudiante.
      */
-    public void cargarTodosLosCursos() {
 
-        gridCursos.getChildren().clear();
-        gridCursos.getColumnConstraints().clear();
-        gridCursos.setHgap(20);   // separación entre tarjetas
-        gridCursos.setVgap(20);
+    public void cargarCursos() {
 
-        int columna = 0;
-        int fila = 0;
-
-        ArrayList<Curso> cursos=new ArrayList<>();
-        
-        try {
-            cursos = cursoDAO.cargarCursos();
-        } catch (TonguelyException e) {
-            Alertas.error("No se han podido cargar los cursos", e.getMessage());
-            return;
-        }
-
-        for (Curso curso : cursos) {
-
-            if (curso == null) {
-                continue;
-            }
-            // TARJETA PRINCIPAL
-        HBox tarjeta = new HBox(15);
-        tarjeta.getStyleClass().add("curso-card");
-        tarjeta.setAlignment(Pos.CENTER_LEFT);
-
-        // CONTENEDOR DE TEXTOS
-        VBox informacion = new VBox(12);
-        informacion.getStyleClass().add("curso-info");
-
-        // Nombre
-        Label nombre = new Label(curso.getNombre());
-        nombre.getStyleClass().add("curso-nombre");
-
-        // Estado
-        Label estado = new Label("Inscrito");
-        estado.getStyleClass().add("curso-estado");
-
-        // Descripción desde MongoDB
-        String textoDescripcion = curso.getDescripcion();
-
-        if (textoDescripcion == null
-                || textoDescripcion.trim().isEmpty()) {
-            textoDescripcion = "Este curso todavía no tiene descripción.";
-        }
-
-        Label descripcion = new Label(textoDescripcion);
-        descripcion.getStyleClass().add("curso-descripcion");
-        descripcion.setMaxWidth(230);   // antes 300, deja más sitio a la imagen
-        descripcion.setWrapText(true);
-
-        // Botón
-        Button entrar = new Button("Entrar al curso");
-
-        entrar.getStyleClass().add("boton-entrar");
-
-        entrar.setOnAction(e -> {
-
-            try {
-
-                FXMLLoader loader = new FXMLLoader(
-                        App.class.getResource(
-                                "/view/actividades.fxml"
-                        )
-                );
-
-                Parent root = loader.load();
-
-                ActividadesController controller
-                        = loader.getController();
-
-                controller.setCurso(curso, idEstudiante1);
-
-                App.scene.setRoot(root);
-
-            } catch (IOException ex) {
-
-                ex.printStackTrace();
-
-            }
-        });
-
-        // Añadimos los textos
-        informacion.getChildren().addAll(
-                nombre,
-                estado,
-                descripcion,
-                entrar
-        );
-        informacion.setPrefWidth(240);
-        informacion.setMinWidth(240);
-
-        // IMAGEN DEL CURSO
-        ImageView imagen = new ImageView(cargarImagen(curso.getFoto()));
-        imagen.setFitWidth(210);
-        imagen.setFitHeight(170);
-        imagen.setPreserveRatio(true);
-        imagen.setSmooth(true);
-
-        // Esquinas redondeadas
-        Rectangle clip = new Rectangle(210, 170);
-        clip.setArcWidth(16);
-        clip.setArcHeight(16);
-        imagen.setClip(clip);
-
-        tarjeta.getChildren().setAll(informacion, imagen);
-        GridPane.setHgrow(tarjeta, Priority.NEVER);
-        GridPane.setFillWidth(tarjeta, false);
-        gridCursos.add(tarjeta, columna, fila);
-
-        if (++columna == 2) {
-            columna = 0;
-            fila++;
-        }
-
-        }
-    }
-
-    public void cargarCursos(ObjectId idEstudiante) {
-
-        this.idEstudiante1 = idEstudiante;
+        this.idEstudiante1 = Sesion.getUsuarioActual().getId();
 
         gridCursos.getChildren().clear();
         gridCursos.getColumnConstraints().clear();
@@ -197,7 +76,7 @@ public class SeleccionCursoController {
         // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa
         List<Inscripciones> inscripciones;
         try {
-            inscripciones = inscripcionesDAO.buscarPorEstudiante(idEstudiante);
+            inscripciones = inscripcionesDAO.buscarPorEstudiante(idEstudiante1);
         } catch (TonguelyException e) {
             Alertas.error("No se han podido cargar los cursos", e.getMessage());
             return;

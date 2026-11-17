@@ -1,4 +1,4 @@
-package tonguely.Excepciones;
+package tonguely.Controller;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

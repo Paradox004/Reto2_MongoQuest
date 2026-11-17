@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.GestionCursosController">
+   <center>
+      <VBox spacing="6.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Cursos">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tablaCursos" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colNombre" prefWidth="160.0" text="Nombre" />
+                  <TableColumn fx:id="colPrecio" prefWidth="70.0" text="Precio" />
+                  <TableColumn fx:id="colDescripcion" prefWidth="250.0" text="Descripción" />
+                  <TableColumn fx:id="colProfesores" prefWidth="120.0" text="Profesores" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+   <right>
+      <VBox prefWidth="300.0" spacing="6.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Datos del curso">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Nombre" />
+            <TextField fx:id="nombreField" />
+            <Label text="Precio (€)" />
+            <TextField fx:id="precioField" />
+            <Label text="Descripción" />
+            <TextArea fx:id="descripcionArea" prefRowCount="4" wrapText="true" />
+            <Label text="Profesores asignados" />
+            <ListView fx:id="listaProfesores" prefHeight="110.0" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" spacing="8.0">
+               <children>
+                  <Button fx:id="nuevoButton" mnemonicParsing="false" onAction="#nuevoCurso" text="Nuevo" />
+                  <Button fx:id="guardarButton" mnemonicParsing="false" onAction="#guardarCurso" text="Guardar" />
+                  <Button fx:id="eliminarButton" mnemonicParsing="false" onAction="#eliminarCurso" text="Eliminar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

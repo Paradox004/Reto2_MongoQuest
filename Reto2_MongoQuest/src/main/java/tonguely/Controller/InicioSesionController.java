@@ -4,20 +4,23 @@
  */
 package tonguely.Controller;
 
-import tonguely.Excepciones.Alertas;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import tonguely.DAO.ProfesorDAO;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
 import tonguely.Excepciones.TonguelyException;
+import tonguely.Main.Sesion;
+import tonguely.modelo.Profesor;
 
 /**
  *
@@ -37,9 +40,27 @@ public class InicioSesionController {
     private Button invitadoButton;
 
     UsuarioDAO dao = new UsuarioDAO();
+    ProfesorDAO profesorDao = new ProfesorDAO();
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
+        Profesor profesor;
+        profesor= profesorDao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+        
+        if (profesor != null) {
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Credenciales Correctas");
+            alerta.setHeaderText("Inicio de sesión correcto");
+            alerta.setContentText("Bienvenido/a, profesor/a " + profesor.getNombre() + ".");
+            alerta.showAndWait();
+            try {
+                Sesion.profesorActual = profesor;
+                App.setRoot("admin");
+            } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            return;
+        }
 
         // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa al usuario
         Usuario usuario;
@@ -49,26 +70,19 @@ public class InicioSesionController {
             Alertas.error("No se ha podido iniciar sesión", e.getMessage());
             return;
         }
-        if (usuario != null) {
-            Alertas.informacion("Credenciales Correctas",
-                    "Inicio de sesión correcto", "Las credenciales coinciden.");
+                if (usuario != null) {
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Credenciales Correctas");
+            alerta.setHeaderText("Inicio de sesión correcto");
+            alerta.setContentText("Las credenciales coinciden.");
+            alerta.showAndWait();
             try {
-                FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/view/seleccionCurso.fxml")
-                );
-                Parent root = loader.load();
-                App.scene.setRoot(root);
-                Stage stage = (Stage) App.scene.getWindow();
-                stage.setWidth(1200);
-                stage.setHeight(750);
-                stage.centerOnScreen();
-                SeleccionCursoController controller = loader.getController();
-                controller.cargarCursos(usuario.getId());
-                
-
+                Sesion.usuarioActual = usuario;
+                App.setRoot("principalUsuario");
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
+            return;
         } else {
             Alertas.error("Inicio de sesión incorrecto", "El usuario o la contraseña no son correctos.");
             emailField.setText("");
@@ -87,9 +101,9 @@ public class InicioSesionController {
 
     @FXML
     private void entradaInvitado(ActionEvent event) {
-        try {
+         try {
                 FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/view/seleccionCurso.fxml")
+                App.class.getResource("/view/todosLosCursos.fxml")
                 );
                 Parent root = loader.load();
                 App.scene.setRoot(root);
@@ -97,8 +111,7 @@ public class InicioSesionController {
                 stage.setWidth(1200);
                 stage.setHeight(750);
                 stage.centerOnScreen();
-                SeleccionCursoController controller = loader.getController();
-                controller.cargarTodosLosCursos();
+                TodosCursosController controller = loader.getController();
 
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
