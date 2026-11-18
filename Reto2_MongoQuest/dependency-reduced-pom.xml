@@ -82,6 +82,22 @@
           <mainClass>tonguely.Main.App</mainClass>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <charset>UTF-8</charset>
+          <show>private</show>
+          <additionalOptions>
+            <additionalOption>--show-packages=all</additionalOption>
+          </additionalOptions>
+          <doctitle>Tonguely · MongoQuest (Reto 2.3)</doctitle>
+          <windowtitle>Tonguely · MongoQuest</windowtitle>
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
