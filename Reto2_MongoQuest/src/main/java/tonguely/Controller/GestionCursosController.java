@@ -3,7 +3,6 @@ package tonguely.Controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -11,8 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -48,7 +45,11 @@ public class GestionCursosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Lista de profesores (selección múltiple)
-        listaProfesores.setItems(FXCollections.observableArrayList(profesorDAO.buscarTodos()));
+        try {
+            listaProfesores.setItems(FXCollections.observableArrayList(profesorDAO.buscarTodos()));
+        } catch (TonguelyException e) {
+            Alertas.error("No se han podido cargar los profesores", e.getMessage());
+        }
         listaProfesores.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listaProfesores.setCellFactory(lv -> new ListCell<>() {
             @Override
@@ -77,8 +78,8 @@ public class GestionCursosController implements Initializable {
     private void cargarCursos() {
         try {
             tablaCursos.setItems(FXCollections.observableArrayList(cursoDAO.cargarCursos()));
-        } catch (TonguelyException ex) {
-            System.getLogger(GestionCursosController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (TonguelyException e) {
+            Alertas.error("No se han podido cargar los cursos", e.getMessage());
         }
     }
 
@@ -130,7 +131,7 @@ public class GestionCursosController implements Initializable {
     private void guardarCurso() {
         String nombre = nombreField.getText().trim();
         if (nombre.isEmpty()) {
-            alerta(Alert.AlertType.WARNING, "El nombre es obligatorio.");
+            Alertas.advertencia("El nombre es obligatorio.");
             return;
         }
 
@@ -141,7 +142,7 @@ public class GestionCursosController implements Initializable {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            alerta(Alert.AlertType.WARNING, "El precio debe ser un número entero (≥ 0).");
+            Alertas.advertencia("El precio debe ser un número entero (≥ 0).");
             return;
         }
 
@@ -149,7 +150,7 @@ public class GestionCursosController implements Initializable {
             // Validación: no puede haber dos cursos con el mismo nombre
             ObjectId idActual = (cursoSeleccionado == null) ? null : cursoSeleccionado.getId();
             if (cursoDAO.existeNombre(nombre, idActual)) {
-                alerta(Alert.AlertType.WARNING, "Ya existe un curso con el nombre \"" + nombre + "\".");
+                Alertas.advertencia("Ya existe un curso con el nombre \"" + nombre + "\".");
                 return;
             }
 
@@ -179,8 +180,9 @@ public class GestionCursosController implements Initializable {
 
             cargarCursos();
             nuevoCurso();
-        } catch (Exception e) {
-            alerta(Alert.AlertType.ERROR, "No se pudo guardar el curso: " + e.getMessage());
+        } catch (TonguelyException e) {
+            // El DAO ya ha registrado el error en el log: aquí solo se avisa al usuario
+            Alertas.error("No se pudo guardar el curso", e.getMessage());
         }
     }
 
@@ -194,26 +196,19 @@ public class GestionCursosController implements Initializable {
     @FXML
     private void eliminarCurso() {
         if (cursoSeleccionado == null) {
-            alerta(Alert.AlertType.WARNING, "Selecciona un curso de la tabla.");
+            Alertas.advertencia("Selecciona un curso de la tabla.");
             return;
         }
-        Alert confirmar = new Alert(Alert.AlertType.CONFIRMATION,
-                "¿Eliminar el curso \"" + cursoSeleccionado.getNombre() + "\"?",
-                ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> resp = confirmar.showAndWait();
-        if (resp.isPresent() && resp.get() == ButtonType.YES) {
+        if (Alertas.confirmar("¿Eliminar el curso \"" + cursoSeleccionado.getNombre() + "\"?")) {
             try {
                 cursoDAO.eliminar(cursoSeleccionado.getId());
                 profesorDAO.quitarCurso(cursoSeleccionado.getNombre());
                 cargarCursos();
                 nuevoCurso();
-            } catch (Exception e) {
-                alerta(Alert.AlertType.ERROR, "No se pudo eliminar el curso: " + e.getMessage());
+            } catch (TonguelyException e) {
+                // El DAO ya ha registrado el error en el log: aquí solo se avisa al usuario
+                Alertas.error("No se pudo eliminar el curso", e.getMessage());
             }
         }
-    }
-
-    private void alerta(Alert.AlertType tipo, String mensaje) {
-        new Alert(tipo, mensaje).showAndWait();
     }
 }

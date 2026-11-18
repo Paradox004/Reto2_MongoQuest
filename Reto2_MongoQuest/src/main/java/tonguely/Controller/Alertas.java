@@ -1,7 +1,9 @@
 package tonguely.Controller;
 
+import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 /**
  * Centraliza los cuadros de diálogo ({@link Alert}) que muestran los controladores.
@@ -69,5 +71,19 @@ public final class Alertas {
      */
     public static void advertencia(String mensaje) {
         mostrar(AlertType.WARNING, null, null, mensaje);
+    }
+
+    /**
+     * Pide confirmación al usuario antes de una acción que no se puede deshacer,
+     * como un borrado. Muestra los botones "Sí" y "No".
+     *
+     * @param mensaje pregunta que se le hace al usuario
+     * @return true si el usuario ha pulsado "Sí"
+     */
+    public static boolean confirmar(String mensaje) {
+        Alert alerta = new Alert(AlertType.CONFIRMATION, mensaje, ButtonType.YES, ButtonType.NO);
+        alerta.setHeaderText(null);
+        Optional<ButtonType> respuesta = alerta.showAndWait();
+        return respuesta.isPresent() && respuesta.get() == ButtonType.YES;
     }
 }

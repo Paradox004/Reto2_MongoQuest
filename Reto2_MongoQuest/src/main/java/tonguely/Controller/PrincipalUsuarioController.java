@@ -40,7 +40,7 @@ public class PrincipalUsuarioController implements Initializable {
 
     @FXML
     private void cerrarSesion() {
-        Sesion.usuarioActual = null;
+        Sesion.cerrar();
         try {
             App.setRoot("inicioSesion_1");
         } catch (IOException ex) {

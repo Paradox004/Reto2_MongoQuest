@@ -52,40 +52,116 @@ public class CursoDAO {
         }
     }
 
+    /**
+     * Devuelve todos los cursos.
+     *
+     * @return lista de cursos (vacía si no hay ninguno)
+     * @throws ConexionException si MongoDB no responde
+     */
     public ArrayList<Curso> cargarCursos() throws TonguelyException {
         try {
-            return coleccion.find().into(new ArrayList<>());
+            ArrayList<Curso> cursos = coleccion.find().into(new ArrayList<>());
+            GestorLog.registrar(TipoOperacion.CONSULTAR, COLECCION,
+                    "Listar cursos (" + cursos.size() + ")");
+            return cursos;
         } catch (MongoException e) {
-            throw new ConexionException("No se ha podido cargar los cursos.", e);
+            GestorLog.registrarError(TipoOperacion.CONSULTAR, COLECCION, e);
+            throw new ConexionException("No se han podido cargar los cursos.", e);
         }
     }
 
-    public void insertar(Curso curso) {
-        coleccion.insertOne(curso);
+    /**
+     * Da de alta un curso nuevo.
+     *
+     * @param curso curso a insertar
+     * @throws ConexionException si MongoDB no responde o rechaza el documento
+     */
+    public void insertar(Curso curso) throws TonguelyException {
+        try {
+            coleccion.insertOne(curso);
+            GestorLog.registrar(TipoOperacion.INSERTAR, COLECCION, "Curso creado: " + curso.getNombre());
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.INSERTAR, COLECCION, e);
+            throw new ConexionException("No se ha podido crear el curso.", e);
+        }
     }
 
-    public boolean actualizar(Curso curso) {
+    /**
+     * Modifica el nombre, el precio, la descripción y los profesores de un curso.
+     *
+     * @param curso curso con los datos nuevos (se busca por su id)
+     * @return true si el curso existía
+     * @throws ConexionException si MongoDB no responde o rechaza los cambios
+     */
+    public boolean actualizar(Curso curso) throws TonguelyException {
         Bson cambios = Updates.combine(
                 Updates.set("nombre", curso.getNombre()),
                 Updates.set("precio", curso.getPrecio()),
                 Updates.set("descripcion", curso.getDescripcion()),
                 Updates.set("profesores", curso.getProfesores())
         );
-        return coleccion.updateOne(Filters.eq("_id", curso.getId()), cambios).getMatchedCount() > 0;
+        try {
+            boolean existia = coleccion.updateOne(Filters.eq("_id", curso.getId()), cambios)
+                    .getMatchedCount() > 0;
+            if (existia) {
+                GestorLog.registrar(TipoOperacion.ACTUALIZAR, COLECCION,
+                        "Curso modificado: " + curso.getNombre());
+            } else {
+                GestorLog.registrarError(TipoOperacion.ACTUALIZAR, COLECCION,
+                        "No existe el curso " + curso.getId());
+            }
+            return existia;
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.ACTUALIZAR, COLECCION, e);
+            throw new ConexionException("No se ha podido modificar el curso.", e);
+        }
     }
 
-    public boolean eliminar(ObjectId idCurso) {
-        return coleccion.deleteOne(Filters.eq("_id", idCurso)).getDeletedCount() > 0;
+    /**
+     * Borra un curso.
+     *
+     * @param idCurso id del curso
+     * @return true si se ha borrado
+     * @throws ConexionException si MongoDB no responde
+     */
+    public boolean eliminar(ObjectId idCurso) throws TonguelyException {
+        try {
+            boolean borrado = coleccion.deleteOne(Filters.eq("_id", idCurso)).getDeletedCount() > 0;
+            if (borrado) {
+                GestorLog.registrar(TipoOperacion.BORRAR, COLECCION, "Curso borrado: " + idCurso);
+            } else {
+                GestorLog.registrarError(TipoOperacion.BORRAR, COLECCION,
+                        "No existe el curso " + idCurso);
+            }
+            return borrado;
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.BORRAR, COLECCION, e);
+            throw new ConexionException("No se ha podido borrar el curso.", e);
+        }
     }
 
-    // true si ya hay OTRO curso con ese nombre (idExcluido = curso que se está editando, o null)
-    public boolean existeNombre(String nombre, ObjectId idExcluido) {
+    /**
+     * Indica si ya hay OTRO curso con ese nombre, sin distinguir mayúsculas.
+     *
+     * @param nombre nombre que se quiere comprobar
+     * @param idExcluido curso que se está editando (para no compararlo consigo mismo), o null
+     * @return true si el nombre ya está en uso
+     * @throws ConexionException si MongoDB no responde
+     */
+    public boolean existeNombre(String nombre, ObjectId idExcluido) throws TonguelyException {
         Pattern exacto = Pattern.compile("^" + Pattern.quote(nombre) + "$", Pattern.CASE_INSENSITIVE);
         Bson filtro = Filters.regex("nombre", exacto);
         if (idExcluido != null) {
             filtro = Filters.and(filtro, Filters.ne("_id", idExcluido));
         }
-        return coleccion.countDocuments(filtro) > 0;
+        try {
+            boolean existe = coleccion.countDocuments(filtro) > 0;
+            GestorLog.registrar(TipoOperacion.CONSULTAR, COLECCION, "Comprobar nombre " + nombre);
+            return existe;
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.CONSULTAR, COLECCION, e);
+            throw new ConexionException("No se ha podido comprobar el nombre del curso.", e);
+        }
     }
 }
 
