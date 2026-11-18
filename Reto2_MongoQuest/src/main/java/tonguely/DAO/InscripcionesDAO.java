@@ -20,7 +20,7 @@ import tonguely.modelo.Inscripciones;
  *
  * @author anartz
  */
-public class InscripcionesDAO {
+public class InscripcionesDAO implements IInscripcionesDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Inscripciones";

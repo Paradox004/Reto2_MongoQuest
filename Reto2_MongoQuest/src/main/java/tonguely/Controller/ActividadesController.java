@@ -69,8 +69,6 @@ public class ActividadesController {
             actividades = new ArrayList<>();
         }
         posicion = 0;
-        System.out.println("Curso: " + curso.getNombre());
-        System.out.println("Número de actividades: " + actividades.size());
         mostrarActividad();
     }
 
@@ -78,8 +76,6 @@ public class ActividadesController {
      * Muestra la actividad actual y comprueba las respuestas del estudiante.
      */
     private void mostrarActividad() {
-        System.out.println("Mostrando actividad...");
-        System.out.println("Actividades: " + actividades.size());
         contenedorActividades.getChildren().clear();
         contenedorActividades.getStyleClass().add("activity-container");
 

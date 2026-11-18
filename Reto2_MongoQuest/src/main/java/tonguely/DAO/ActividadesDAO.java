@@ -17,7 +17,7 @@ import tonguely.modelo.Actividades;
  *
  * @author anartz
  */
-public class ActividadesDAO {
+public class ActividadesDAO implements IActividadesDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Actividades";

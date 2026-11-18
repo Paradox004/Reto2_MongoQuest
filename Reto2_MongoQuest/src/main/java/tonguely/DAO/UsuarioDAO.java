@@ -24,7 +24,7 @@ import tonguely.modelo.Usuario;
  *
  * @author anartz
  */
-public class UsuarioDAO {
+public class UsuarioDAO implements IUsuarioDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Usuario";

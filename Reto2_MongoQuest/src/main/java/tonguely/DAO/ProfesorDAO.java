@@ -25,7 +25,7 @@ import tonguely.modelo.Profesor;
  *
  * @author anartz
  */
-public class ProfesorDAO {
+public class ProfesorDAO implements IProfesorDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Profesores";
