@@ -60,22 +60,22 @@
       </VBox>
    </top>
    <center>
-      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-         <tabs>
+    <TabPane tabClosingPolicy="UNAVAILABLE"
+             BorderPane.alignment="CENTER"
+             style="-fx-background-color: #f2faf6;">
+        <tabs>
             <Tab text="Mis cursos">
-               <content>
-                  <fx:include fx:id="misCursos" source="seleccionCurso.fxml" />
-               </content>
+                <content>
+                    <fx:include fx:id="misCursos" source="seleccionCurso.fxml" />
+                </content>
             </Tab>
+
             <Tab text="Explorar Cursos">
-               <content>
-                  <fx:include fx:id="Cursos" source="todosLosCursos.fxml" />
-               </content>
+                <content>
+                    <fx:include fx:id="Cursos" source="ventanaInscribirseUsuario.fxml" />
+                </content>
             </Tab>
-         </tabs>
-         <BorderPane.margin>
-            <Insets bottom="16.0" left="24.0" right="24.0" />
-         </BorderPane.margin>
-      </TabPane>
-   </center>
+        </tabs>
+    </TabPane>
+</center>
 </BorderPane>

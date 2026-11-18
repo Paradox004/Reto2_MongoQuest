@@ -123,15 +123,15 @@ public class ActividadesControllerTest extends PruebaVista {
         assertEquals("¡Respuesta correcta!", cerrarDialogo());
     }
 
-    /** Al acertar todas se ve el mensaje final y "Volver a los cursos" lleva a "Mis cursos". */
+    /** Al acertar todas se ve el mensaje final y "← Volver a los cursos" lleva a la pantalla principal. */
     @Test
     public void terminarYVolverALosCursos() {
         for (Actividades a : actividades) {
             responderBien(a);
         }
         verifyThat(".finish-label", isVisible());
-        clickOn(boton("Volver a los cursos"));
-        verifyThat("#gridCursos", isVisible());
+        clickOn(boton("← Volver a los cursos"));
+        verifyThat("#bienvenidaLabel", isVisible());
     }
 
     /**

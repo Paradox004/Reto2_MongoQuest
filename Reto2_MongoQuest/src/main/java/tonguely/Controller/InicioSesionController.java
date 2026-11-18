@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import tonguely.DAO.ProfesorDAO;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
@@ -77,6 +78,8 @@ public class InicioSesionController {
                     "Las credenciales coinciden.");
             try {
                 App.setRoot("principalUsuario");
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setMaximized(true);
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
