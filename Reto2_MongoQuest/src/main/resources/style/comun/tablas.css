@@ -1,0 +1,76 @@
+/*
+ * tablas.css: TableView (con la clase fila-error para el visor del log) y ListView.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Tablas ===== */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -tg-indigo;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-size: 32;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #EEF4F1 transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #F8FCFA;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -tg-turquesa;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+}
+
+/* Para el visor del log: filas de error en rojo (Style Class "fila-error" con setRowFactory) */
+.table-row-cell.fila-error {
+    -fx-background-color: #FDECEC;
+}
+
+.table-row-cell.fila-error .table-cell {
+    -fx-text-fill: #9B1C1C;
+}
+
+.table-row-cell.fila-error:selected {
+    -fx-background-color: -tg-error;
+}
+
+.table-row-cell.fila-error:selected .table-cell {
+    -fx-text-fill: white;
+}
+
+/* ===== Listas ===== */
+.list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 8;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: -tg-turquesa;
+    -fx-text-fill: white;
+}

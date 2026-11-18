@@ -4,6 +4,7 @@ import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import tonguely.Main.App;
 
 /**
  * Centraliza los cuadros de diálogo ({@link Alert}) que muestran los controladores.
@@ -40,7 +41,16 @@ public final class Alertas {
             alerta.setHeaderText(cabecera);
         }
         alerta.setContentText(mensaje);
+        aplicarEstilo(alerta);
         alerta.showAndWait();
+    }
+
+    /**
+     * Un Alert se abre en su propia ventana, que no hereda la hoja de estilos
+     * de la escena principal: hay que añadírsela a su DialogPane.
+     */
+    private static void aplicarEstilo(Alert alerta) {
+        alerta.getDialogPane().getStylesheets().add(App.HOJA_ESTILOS);
     }
 
     /**
@@ -83,6 +93,7 @@ public final class Alertas {
     public static boolean confirmar(String mensaje) {
         Alert alerta = new Alert(AlertType.CONFIRMATION, mensaje, ButtonType.YES, ButtonType.NO);
         alerta.setHeaderText(null);
+        aplicarEstilo(alerta);
         Optional<ButtonType> respuesta = alerta.showAndWait();
         return respuesta.isPresent() && respuesta.get() == ButtonType.YES;
     }

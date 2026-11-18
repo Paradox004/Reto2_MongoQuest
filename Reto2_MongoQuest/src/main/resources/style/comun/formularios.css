@@ -1,0 +1,56 @@
+/*
+ * formularios.css: campos de texto, áreas de texto, desplegables y casillas.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Campos de texto y desplegables ===== */
+.text-field,
+.password-field,
+.text-area,
+.combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 8;
+}
+
+.text-field,
+.password-field {
+    -fx-padding: 7 10 7 10;
+}
+
+.text-field:focused,
+.password-field:focused,
+.text-area:focused,
+.combo-box:focused {
+    -fx-border-color: -tg-turquesa;
+    -fx-border-width: 1.5;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+}
+
+/* Texto mostrado dentro del desplegable cerrado: sin fondo de selección */
+.combo-box > .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -tg-texto;
+}
+
+/* ===== Casillas ===== */
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -tg-turquesa;
+    -fx-border-color: -tg-turquesa;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
