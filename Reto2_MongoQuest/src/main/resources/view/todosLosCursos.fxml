@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.TodosCursosController" stylesheets="@../style/seleccion-curso.css">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.TodosCursosController" stylesheets="@../style/seleccion-curso.css">
    <content>
       <GridPane fx:id="gridCursos" styleClass="grid-cursos">
         <columnConstraints>
