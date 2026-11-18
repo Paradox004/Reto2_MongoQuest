@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<ScrollPane fitToHeight="true"
+            fitToWidth="true"
+            maxWidth="Infinity"
+            maxHeight="Infinity"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tonguely.Controller.VentanaInscribirseUsuarioController"
+            stylesheets="@../style/seleccion-curso.css">
+
+    <content>
+        <GridPane fx:id="gridCursos" styleClass="grid-cursos">
+
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+
+        </GridPane>
+    </content>
+</ScrollPane>

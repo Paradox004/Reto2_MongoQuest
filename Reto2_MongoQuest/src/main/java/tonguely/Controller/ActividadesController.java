@@ -1,4 +1,3 @@
-
 package tonguely.Controller;
 
 import java.io.IOException;
@@ -13,10 +12,12 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import tonguely.modelo.Actividades;
 import tonguely.modelo.Curso;
 import org.bson.types.ObjectId;
 import tonguely.DAO.ActividadesDAO;
+import tonguely.DAO.InscripcionesDAO;
 import tonguely.Excepciones.TonguelyException;
 import tonguely.Main.App;
 
@@ -27,26 +28,45 @@ import tonguely.Main.App;
  */
 public class ActividadesController {
 
-    /** Lista de actividades del curso. */
+    /**
+     * Lista de actividades del curso.
+     */
     ArrayList<Actividades> actividades = new ArrayList<Actividades>();
 
-    /** Curso seleccionado. */
+    /**
+     * Curso seleccionado.
+     */
     Curso curso;
 
-    /** Identificador del estudiante. */
+    /**
+     * Identificador del estudiante.
+     */
     ObjectId idEstudiante;
 
-    /** DAO para acceder a las actividades. */
+    /**
+     * DAO para acceder a las actividades.
+     */
     ActividadesDAO dao = new ActividadesDAO();
+    
+    /**
+     * DAO para acceder a las inscripciones.
+     */
+    InscripcionesDAO inscripcionesDAO = new InscripcionesDAO();
 
-    /** Posición de la actividad actual. */
+    /**
+     * Posición de la actividad actual.
+     */
     int posicion;
 
-    /** Contenedor de las actividades. */
+    /**
+     * Contenedor de las actividades.
+     */
     @FXML
     private VBox contenedorActividades;
 
-    /** Etiqueta del progreso. */
+    /**
+     * Etiqueta del progreso.
+     */
     @FXML
     private Label labelProgreso;
 
@@ -77,6 +97,18 @@ public class ActividadesController {
      */
     private void mostrarActividad() {
         contenedorActividades.getChildren().clear();
+        Button volverCursosButton = new Button("← Volver a los cursos");
+        volverCursosButton.getStyleClass().add("primary-button");
+        volverCursosButton.setOnAction(e -> {
+            try {
+                App.setRoot("principalUsuario");
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setMaximized(true);
+                } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+        contenedorActividades.getChildren().add(volverCursosButton);
         contenedorActividades.getStyleClass().add("activity-container");
 
         if (posicion >= actividades.size()) {
@@ -84,24 +116,7 @@ public class ActividadesController {
             Label finalizado = new Label("¡Has terminado las actividades!");
             finalizado.getStyleClass().add("finish-label");
             contenedorActividades.getChildren().add(finalizado);
-
-            Button volverButton = new Button("Volver a los cursos");
-            volverButton.getStyleClass().add("primary-button");
-            contenedorActividades.getChildren().add(volverButton);
-            volverButton.setOnAction(e -> {
-                try {
-                    FXMLLoader loader = new FXMLLoader(
-                            App.class.getResource("/view/seleccionCurso.fxml")
-                    );
-                    Parent root = loader.load();
-                    SeleccionCursoController controller = loader.getController();
-                    controller.cargarCursos();
-                    App.scene.setRoot(root);
-
-                } catch (IOException ex) {
-                    System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
-            });
+            inscripcionesDAO.actualizarEstado(idEstudiante, curso.getId());
             return;
         }
 
@@ -155,7 +170,7 @@ public class ActividadesController {
 
             contenedorActividades.getChildren().add(comprobarButton);
 
-        // Mostrar preguntas de respuesta escrita.
+            // Mostrar preguntas de respuesta escrita.
         } else if (ac.getTipo().equalsIgnoreCase("pregunta")) {
 
             TextField respuestaField = new TextField();

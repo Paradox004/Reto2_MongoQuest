@@ -160,13 +160,35 @@ public class SeleccionCursoController {
 
             }
         });
+        
+        Button baja = new Button("Darse de baja");
+
+        baja.getStyleClass().add("boton-baja");
+
+        baja.setOnAction(e -> {
+                try {
+                    inscripcionesDAO.desinscribir(idEstudiante1, curso.getId());
+                    Alertas.informacion("Dado de baja correctamente", "baja dada",
+                    "Baja correcta en " + curso.getNombre() + ".");
+                } catch (TonguelyException ex) {
+                    System.getLogger(SeleccionCursoController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    Alertas.error("Baja incorrecta", "Fallo en la base de datos");
+                }
+                try {
+                App.setRoot("principalUsuario");
+                } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            
+        });
 
         // Añadimos los textos
         informacion.getChildren().addAll(
                 nombre,
                 estado,
                 descripcion,
-                entrar
+                entrar,
+                baja
         );
         informacion.setPrefWidth(240);
         informacion.setMinWidth(240);

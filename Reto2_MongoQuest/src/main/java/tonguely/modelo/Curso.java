@@ -34,6 +34,10 @@ public class Curso {
         this.profesores = profesores;
     }
 
+    public Curso(String nombreCurso) {
+        this.nombre=nombreCurso;
+    }
+
     public ObjectId getId() {
         return id;
     }
