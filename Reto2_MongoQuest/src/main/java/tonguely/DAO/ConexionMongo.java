@@ -56,4 +56,15 @@ public class ConexionMongo {
         return cliente.getDatabase("TonguelyDB")
                 .withCodecRegistry(codecRegistry);
     }
+
+    /**
+     * Cierra el cliente de MongoDB y libera sus conexiones. Se llama una sola
+     * vez, al cerrar la aplicación ({@link tonguely.Main.App#stop()}).
+     */
+    public static void cerrar() {
+        if (cliente != null) {
+            cliente.close();
+            cliente = null;
+        }
+    }
 }

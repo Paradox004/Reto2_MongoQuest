@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import tonguely.DAO.ConexionMongo;
 
 /**
  * JavaFX App
@@ -36,6 +37,15 @@ public void start(Stage stage) throws IOException {
 
 }
 
+
+    /**
+     * JavaFX lo llama al cerrar la ventana: se cierra la conexión con MongoDB
+     * para no dejar recursos abiertos.
+     */
+    @Override
+    public void stop() {
+        ConexionMongo.cerrar();
+    }
 
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
