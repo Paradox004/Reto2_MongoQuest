@@ -16,18 +16,49 @@ import tonguely.Excepciones.TonguelyException;
  */
 public interface IInscripcionesDAO {
 
-    /** Devuelve las inscripciones de un estudiante. */
+    /**
+     * Devuelve las inscripciones de un estudiante.
+     *
+     * @param idEstudiante id del estudiante
+     * @return lista de inscripciones (vacía si no tiene)
+     * @throws TonguelyException si falla MongoDB
+     */
     List<Inscripciones> buscarPorEstudiante(ObjectId idEstudiante) throws TonguelyException;
 
-    /** Indica si un estudiante está inscrito en un curso. */
+    /**
+     * Indica si un estudiante está inscrito en un curso.
+     *
+     * @param idEstudiante id del estudiante
+     * @param idCurso id del curso
+     * @return true si existe la inscripción
+     * @throws TonguelyException si falla MongoDB
+     */
     boolean estaInscrito(ObjectId idEstudiante, ObjectId idCurso) throws TonguelyException;
 
-    /** Devuelve las inscripciones de varios cursos a la vez. */
+    /**
+     * Devuelve las inscripciones de varios cursos a la vez.
+     *
+     * @param idsCursos ids de los cursos
+     * @return lista de inscripciones (vacía si no se pasa ningún curso)
+     * @throws TonguelyException si falla MongoDB
+     */
     List<Inscripciones> buscarPorCursos(Collection<ObjectId> idsCursos) throws TonguelyException;
 
-    /** Inscribe a un estudiante en un curso (si ya lo estaba, no hace nada). */
+    /**
+     * Inscribe a un estudiante en un curso (si ya lo estaba, no hace nada).
+     *
+     * @param idEstudiante id del estudiante
+     * @param idCurso id del curso
+     * @throws TonguelyException si falla MongoDB
+     */
     void inscribir(ObjectId idEstudiante, ObjectId idCurso) throws TonguelyException;
 
-    /** Quita a un estudiante de un curso. */
+    /**
+     * Quita a un estudiante de un curso.
+     *
+     * @param idEstudiante id del estudiante
+     * @param idCurso id del curso
+     * @throws TonguelyException si falla MongoDB
+     */
     void desinscribir(ObjectId idEstudiante, ObjectId idCurso) throws TonguelyException;
 }
