@@ -47,7 +47,7 @@ public final class GestorLog {
     private static final String SEPARADOR = " | ";
 
     /** Formato de la fecha y la hora de cada línea. */
-    private static final DateTimeFormatter FORMATO_FECHA
+    public static final DateTimeFormatter FORMATO_FECHA
             = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /** Logger de la aplicación. Es thread-safe, no hace falta synchronized. */

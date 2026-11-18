@@ -1,0 +1,24 @@
+/*
+ * tonguely.css: hoja de estilos común de toda la aplicación.
+ *
+ * Este fichero solo importa las partes, que están en la carpeta comun/.
+ * App lo añade a la escena entera y Alertas a cada aviso, así que para
+ * cambiar un estilo se edita la parte correspondiente, no este fichero.
+ *
+ * Paleta sacada del logo de Tonguely (definida en comun/base.css):
+ *   - índigo (texto "Tonguely")              -> color principal
+ *   - turquesa -> verde (bocadillo del logo) -> acento y botones
+ *   - fondo verde muy claro                  -> el que ya usan las vistas
+ *
+ * Los style="..." del FXML y las hojas propias de cada vista
+ * (actividades.css, seleccion-curso.css) tienen preferencia sobre esta.
+ *
+ * El orden importa: base.css va primero porque define los colores.
+ */
+
+@import "comun/base.css";
+@import "comun/botones.css";
+@import "comun/formularios.css";
+@import "comun/tablas.css";
+@import "comun/navegacion.css";
+@import "comun/dialogos.css";

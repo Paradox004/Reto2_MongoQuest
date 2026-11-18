@@ -1,7 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+package tonguely.Controller;
+
 import java.io.IOException;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +10,10 @@ import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import org.testfx.framework.junit5.ApplicationTest;
 import tonguely.Main.App;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
@@ -29,13 +26,24 @@ import static tonguely.Main.App.scene;
  * el usuario (escribir en los campos y pulsar el botón) y comprueba el mensaje
  * del {@code Alert} que muestra {@code InicioSesionController}.
  *
- * Requisitos para ejecutarlas: MongoDB arrancado en {@code localhost:27017}
- * y el usuario {@code ane@gmail.com} con contraseña {@code 1234} en la
- * colección {@code Usuario}.
+ * Requisito para ejecutarlas: MongoDB arrancado en {@code localhost:27017}.
+ * El usuario de prueba {@code ane@gmail.com} / {@code 1234} lo crea
+ * {@link DatosPrueba} antes de los tests si todavía no existe.
  *
  * @author anartz
  */
 public class InicioSesionControllerTest extends ApplicationTest {
+
+    /**
+     * Se ejecuta una vez antes de todos los tests: asegura que existe el
+     * usuario de prueba, para que los tests no dependan de los datos de cada equipo.
+     *
+     * @throws Exception si MongoDB no está arrancado
+     */
+    @BeforeAll
+    public static void prepararDatos() throws Exception {
+        DatosPrueba.asegurarUsuarioPrueba();
+    }
 
     /**
      * Prepara la ventana antes de cada test: carga la vista de inicio de sesión
@@ -53,7 +61,13 @@ public class InicioSesionControllerTest extends ApplicationTest {
         System.out.println("6. Creando escena");
 
         stage.setScene(scene);
+        // Traer la ventana al frente: si Windows no le da el foco, lo que escribe TestFX se pierde.
+        // "Siempre encima" solo un momento, para que después no tape los avisos (Alert).
         stage.show();
+        stage.setAlwaysOnTop(true);
+        stage.toFront();
+        stage.requestFocus();
+        stage.setAlwaysOnTop(false);
 
         System.out.println("7. Ventana mostrada");
 

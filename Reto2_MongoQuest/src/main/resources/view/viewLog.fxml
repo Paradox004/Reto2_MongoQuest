@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.ViewLogController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.ViewLogController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
          <padding>
@@ -30,7 +29,7 @@
                <children>
                   <ComboBox fx:id="cbTipo" prefWidth="150.0" promptText="Todos los tipos" />
                   <CheckBox fx:id="chBSoloError" mnemonicParsing="false" text="Solo errores" />
-                  <TextField fx:id="tFBuscar" promptText="Buscar por usuario o detalle" />
+                  <TextField fx:id="tFBuscar" prefHeight="25.0" prefWidth="161.0" promptText="Buscar por usuario o detalle" />
                   <Button fx:id="bActualizar" mnemonicParsing="false" onAction="#actualizar" text="Actualizar" textAlignment="CENTER" />
                </children>
                <VBox.margin>

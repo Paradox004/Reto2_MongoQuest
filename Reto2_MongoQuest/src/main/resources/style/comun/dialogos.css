@@ -1,0 +1,24 @@
+/*
+ * dialogos.css: avisos (Alert). Alertas añade tonguely.css a cada DialogPane.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Avisos (Alert) ===== */
+.dialog-pane {
+    -fx-background-color: white;
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: -tg-fondo;
+    -fx-border-color: transparent transparent -tg-borde transparent;
+}
+
+.dialog-pane > .header-panel .label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -tg-indigo;
+}
+
+.dialog-pane > .content.label {
+    -fx-padding: 14 16 14 16;
+}

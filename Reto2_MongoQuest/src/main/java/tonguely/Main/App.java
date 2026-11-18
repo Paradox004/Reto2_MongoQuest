@@ -16,11 +16,20 @@ public class App extends Application {
 
     public static Scene scene;
 
+    /**
+     * Hoja de estilos común de la aplicación. Se añade a la escena una sola vez:
+     * como las pantallas cambian con scene.setRoot(), todas la heredan.
+     * Alertas también la usa para que los avisos tengan el mismo aspecto.
+     */
+    public static final String HOJA_ESTILOS = App.class.getResource("/style/tonguely.css").toExternalForm();
+
 @Override
 public void start(Stage stage) throws IOException {
     System.out.println("5. Iniciando JavaFX");
 
     scene = new Scene(loadFXML("inicioSesion_1"), 640, 480);
+    scene.getStylesheets().add(HOJA_ESTILOS);
+    stage.setTitle("Tonguely");
 
     System.out.println("6. Creando escena");
 
