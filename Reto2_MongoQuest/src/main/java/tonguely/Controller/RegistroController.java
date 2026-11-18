@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
@@ -105,6 +106,17 @@ public class RegistroController {
      */
     @FXML
     private void abrirVentanaInvitado(ActionEvent event) {
+        // Igual que "Continuar como invitado" en el inicio de sesión:
+        // catálogo de cursos en una ventana más grande
+        try {
+            App.setRoot("todosLosCursos");
+            Stage stage = (Stage) App.scene.getWindow();
+            stage.setWidth(1200);
+            stage.setHeight(750);
+            stage.centerOnScreen();
+        } catch (IOException ex) {
+            System.getLogger(RegistroController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
 }
