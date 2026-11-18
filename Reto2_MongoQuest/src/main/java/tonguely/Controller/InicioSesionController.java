@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import tonguely.DAO.ProfesorDAO;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
@@ -106,10 +105,6 @@ public class InicioSesionController {
                 );
                 Parent root = loader.load();
                 App.scene.setRoot(root);
-                Stage stage = (Stage) App.scene.getWindow();
-                stage.setWidth(1200);
-                stage.setHeight(750);
-                stage.centerOnScreen();
                 TodosCursosController controller = loader.getController();
 
             } catch (IOException ex) {

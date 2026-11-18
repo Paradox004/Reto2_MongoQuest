@@ -24,18 +24,54 @@ public class App extends Application {
      */
     public static final String HOJA_ESTILOS = App.class.getResource("/style/tonguely.css").toExternalForm();
 
+    /** Ancho mínimo de la ventana, para que ninguna pantalla quede demasiado pequeña. */
+    private static final double ANCHO_MINIMO = 640;
+
+    /** Alto mínimo de la ventana. */
+    private static final double ALTO_MINIMO = 480;
+
 @Override
 public void start(Stage stage) throws IOException {
 
-    scene = new Scene(loadFXML("inicioSesion_1"), 640, 480);
+    // Sin ancho ni alto: la escena toma el tamaño preferido de la vista (prefWidth/prefHeight del FXML)
+    scene = new Scene(loadFXML("inicioSesion_1"));
     scene.getStylesheets().add(HOJA_ESTILOS);
     stage.setTitle("Tonguely");
+    stage.setMinWidth(ANCHO_MINIMO);
+    stage.setMinHeight(ALTO_MINIMO);
 
+    // Cada vez que cambia la pantalla, la ventana se adapta a la vista nueva.
+    // Se escucha la propiedad root de la escena, así sirve tanto para App.setRoot("...")
+    // como para los controladores que hacen App.scene.setRoot(root) directamente.
+    scene.rootProperty().addListener((propiedad, vistaAnterior, vistaNueva) -> ajustarVentana(stage, vistaNueva));
 
     stage.setScene(scene);
     stage.show();
 
 }
+
+    /**
+     * Ajusta el tamaño de la ventana al tamaño preferido de la vista nueva y la centra.
+     * Si el usuario ha maximizado la ventana, se respeta y no se cambia nada.
+     *
+     * @param stage ventana de la aplicación
+     * @param vista vista que se acaba de mostrar
+     */
+    private static void ajustarVentana(Stage stage, Parent vista) {
+        if (stage.isMaximized() || stage.isFullScreen()) {
+            return;
+        }
+        // La ventana es algo más grande que la escena por el borde y la barra de título
+        double bordeAncho = stage.getWidth() - scene.getWidth();
+        double bordeAlto = stage.getHeight() - scene.getHeight();
+
+        double ancho = Math.max(vista.prefWidth(-1), ANCHO_MINIMO);
+        double alto = Math.max(vista.prefHeight(-1), ALTO_MINIMO);
+
+        stage.setWidth(ancho + bordeAncho);
+        stage.setHeight(alto + bordeAlto);
+        stage.centerOnScreen();
+    }
 
 
     /**
