@@ -22,7 +22,7 @@ import tonguely.modelo.Curso;
  *
  * @author anartz
  */
-public class CursoDAO {
+public class CursoDAO implements ICursoDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Cursos";
