@@ -8,7 +8,9 @@ module tonguely.reto2_mongoquest {
     requires org.mongodb.bson;
     requires java.base;
     requires java.logging;
+    requires javafx.base;
     opens tonguely.modelo to org.mongodb.bson;
     opens tonguely.Controller to javafx.fxml;
+    opens tonguely.Log to javafx.base;
 }
 

@@ -22,7 +22,7 @@ public class EntradaLog {
 
     @Override
     public String toString() {
-        return "EntradaLog []";
+        return "EntradaLog [ ]";
     }
 
     public LocalDateTime getFecha() {
