@@ -78,6 +78,8 @@ public class InicioSesionController {
                     "Las credenciales coinciden.");
             try {
                 App.setRoot("principalUsuario");
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setMaximized(true);
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -106,10 +108,6 @@ public class InicioSesionController {
                 );
                 Parent root = loader.load();
                 App.scene.setRoot(root);
-                Stage stage = (Stage) App.scene.getWindow();
-                stage.setWidth(1200);
-                stage.setHeight(750);
-                stage.centerOnScreen();
                 TodosCursosController controller = loader.getController();
 
             } catch (IOException ex) {

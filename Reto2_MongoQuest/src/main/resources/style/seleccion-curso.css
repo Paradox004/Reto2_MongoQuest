@@ -75,6 +75,36 @@
     -fx-background-color: #174FC7;
 }
 
+
+.boton-baja {
+    -fx-background-color: #FF0000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 22px;
+    -fx-cursor: hand;
+}
+
+.boton-baja:hover {
+    -fx-background-color: #FF0000;
+}
+
+.boton-inscribirse {
+    -fx-background-color: #90EE90;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 22px;
+    -fx-cursor: hand;
+}
+
+.boton-inscribirse:hover {
+    -fx-background-color: #90EE90;
+}
+
+
 /* Separación de los cursos */
 .grid-cursos {
     -fx-hgap: 22px;

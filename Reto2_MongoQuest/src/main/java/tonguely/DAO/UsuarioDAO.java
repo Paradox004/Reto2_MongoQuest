@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
@@ -13,6 +14,7 @@ import tonguely.Excepciones.TonguelyException;
 import tonguely.Log.GestorLog;
 import tonguely.Log.TipoOperacion;
 import tonguely.Main.Sesion;
+import tonguely.modelo.Curso;
 import tonguely.modelo.Usuario;
 
 /**
@@ -141,5 +143,12 @@ public class UsuarioDAO implements IUsuarioDAO {
             throw new ConexionException("No se ha podido comprobar el inicio de sesión. "
                     + "Comprueba que la base de datos está arrancada.", e);
         }
+    }
+    
+    public void aniadirCurso(ObjectId idUsuario,String nombreCurso){
+        coleccion.updateOne(
+        Filters.eq("_id", idUsuario),
+        Updates.push("cursos", new Curso(nombreCurso))
+    );
     }
 }

@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -116,7 +117,6 @@ public class InscripcionesDAO implements IInscripcionesDAO {
         Inscripciones ins = new Inscripciones();
         ins.setIdEstudiante(idEstudiante);
         ins.setIdCurso(idCurso);
-        ins.setProgreso(0);
         ins.setFechaInicio(new Date());
         ins.setEstado("En curso");
 
@@ -151,4 +151,16 @@ public class InscripcionesDAO implements IInscripcionesDAO {
             throw new ConexionException("No se ha podido quitar la inscripción.", e);
         }
     }
+    
+    public void actualizarEstado(ObjectId idUsuario, ObjectId idCurso) {
+
+    coleccion.updateOne(
+        Filters.and(
+            Filters.eq("usuario_id", idUsuario),
+            Filters.eq("curso_id", idCurso)
+        ),
+        Updates.set("estado", "Completado")
+    );
+
+}
 }

@@ -19,7 +19,7 @@
             <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
          </padding>
          <children>
-            <VBox alignment="TOP_CENTER" fillWidth="true" maxWidth="460.0" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #057d4d; -fx-border-width: 1;" StackPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" fillWidth="true" maxHeight="-Infinity" maxWidth="460.0" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #057d4d; -fx-border-width: 1;" StackPane.alignment="CENTER">
                <padding>
                   <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
                </padding>
@@ -77,12 +77,12 @@
 
                   <HBox spacing="12.0">
                      <children>
-                        <Button fx:id="registrarButton" maxWidth="1.7976931348623157E308" minHeight="50.0" mnemonicParsing="false" onAction="#registrarUsuario" text="¿Aún no tienes cuenta? Regístrate gratis" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                        <Button fx:id="registrarButton" maxWidth="1.7976931348623157E308" minHeight="50.0" prefWidth="200.0" mnemonicParsing="false" onAction="#registrarUsuario" text="¿Aún no tienes cuenta? Regístrate gratis" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Italic" size="11.0" />
                            </font>
                         </Button>
-                        <Button fx:id="invitadoButton" maxWidth="1.7976931348623157E308" minHeight="50.0" mnemonicParsing="false" onAction="#entradaInvitado" text="¿Prefieres explorar antes? Continuar como invitado" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                        <Button fx:id="invitadoButton" maxWidth="1.7976931348623157E308" minHeight="50.0" prefWidth="200.0" mnemonicParsing="false" onAction="#entradaInvitado" text="¿Prefieres explorar antes? Continuar como invitado" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Italic" size="11.0" />
                            </font>

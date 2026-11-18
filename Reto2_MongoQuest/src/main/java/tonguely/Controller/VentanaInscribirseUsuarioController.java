@@ -1,0 +1,220 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package tonguely.Controller;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import org.bson.types.ObjectId;
+import tonguely.DAO.CursoDAO;
+import tonguely.DAO.InscripcionesDAO;
+import tonguely.DAO.UsuarioDAO;
+import tonguely.Excepciones.TonguelyException;
+import tonguely.Main.App;
+import tonguely.Main.Sesion;
+import tonguely.modelo.Curso;
+import tonguely.modelo.Inscripciones;
+
+/**
+ *
+ * @author songo
+ */
+public class VentanaInscribirseUsuarioController implements Initializable{
+/**
+     * Panel donde se muestran los cursos.
+     */
+    @FXML
+    private GridPane gridCursos;
+
+    /**
+     * DAO para gestionar las inscripciones.
+     */
+    private final InscripcionesDAO inscripcionesDAO
+            = new InscripcionesDAO();
+
+    /**
+     * DAO para gestionar los cursos.
+     */
+    private final CursoDAO cursoDAO
+            = new CursoDAO();
+    
+    /**
+     * DAO para gestionar los usuarios.
+     */
+    private final UsuarioDAO usuarioDAO
+            = new UsuarioDAO();
+
+    /**
+     * Identificador del estudiante.
+     */
+    private ObjectId idEstudiante1=Sesion.usuarioActual.getId();
+    
+    @FXML private SeleccionCursoController misCursosController;
+
+    /**
+     * Carga los cursos en los que está inscrito el estudiante.
+     *
+     * @param idEstudiante identificador del estudiante.
+     */
+    /**
+     * Carga la imagen del curso a partir de su ruta.
+     *
+     * @param ruta ruta de la imagen.
+     * @return imagen cargada o null si no se encuentra.
+     */
+    private Image cargarImagen(String ruta) {
+        String r = (ruta == null || ruta.isBlank()) ? "/img/curso-default.png"
+                : (ruta.startsWith("/") ? ruta : "/" + ruta);
+
+        URL url = getClass().getResource(r);
+        if (url == null) {
+            url = getClass().getResource("/img/curso-default.png");
+        }
+        if (url == null) {
+            return null;
+        }
+
+        Image img = new Image(url.toExternalForm());
+        return img.isError() ? null : img;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        gridCursos.getChildren().clear();
+        gridCursos.getColumnConstraints().clear();
+        gridCursos.setHgap(20);   // separación entre tarjetas
+        gridCursos.setVgap(20);
+
+        int columna = 0;
+        int fila = 0;
+
+        ArrayList<Curso> cursos=new ArrayList<>();
+        
+        try {
+            cursos = cursoDAO.cargarCursos();
+        } catch (TonguelyException e) {
+            Alertas.error("No se han podido cargar los cursos", e.getMessage());
+            return;
+        }
+
+        for (Curso curso : cursos) {
+
+            try {
+                if (curso == null||inscripcionesDAO.estaInscrito(idEstudiante1, curso.getId())) {
+                    continue;
+                }
+            } catch (TonguelyException ex) {
+                System.getLogger(VentanaInscribirseUsuarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            // TARJETA PRINCIPAL
+        HBox tarjeta = new HBox(15);
+        tarjeta.getStyleClass().add("curso-card");
+        tarjeta.setAlignment(Pos.CENTER_LEFT);
+
+        // CONTENEDOR DE TEXTOS
+        VBox informacion = new VBox(12);
+        informacion.getStyleClass().add("curso-info");
+
+        // Nombre
+        Label nombre = new Label(curso.getNombre());
+        nombre.getStyleClass().add("curso-nombre");
+
+        // Estado
+        Label estado = new Label("Inscrito");
+        estado.getStyleClass().add("curso-estado");
+
+        // Descripción desde MongoDB
+        String textoDescripcion = curso.getDescripcion();
+
+        if (textoDescripcion == null
+                || textoDescripcion.trim().isEmpty()) {
+            textoDescripcion = "Este curso todavía no tiene descripción.";
+        }
+
+        Label descripcion = new Label(textoDescripcion);
+        descripcion.getStyleClass().add("curso-descripcion");
+        descripcion.setMaxWidth(230);   // antes 300, deja más sitio a la imagen
+        descripcion.setWrapText(true);
+
+        // Botón
+        
+        Button inscribirse = new Button("Inscribirse");
+
+        inscribirse.getStyleClass().add("boton-inscribirse");
+
+        inscribirse.setOnAction(e -> {
+
+                try {
+                    inscripcionesDAO.inscribir(idEstudiante1, curso.getId());
+                    usuarioDAO.aniadirCurso(idEstudiante1, curso.getNombre());
+                        Alertas.informacion("Inscripcion Correcta", "Inscrito en el curso",
+                    "Bienvenido/a, al curso " + curso.getNombre() + ".");
+                        
+                } catch (TonguelyException ex) {
+                    System.getLogger(VentanaInscribirseUsuarioController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    Alertas.error("Inscripcion incorrecta", "Fallo en la base de datos");
+                }
+                try {
+                App.setRoot("principalUsuario");
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setMaximized(true);
+                } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+
+        // Añadimos los textos
+        informacion.getChildren().addAll(
+                nombre,
+                estado,
+                descripcion,
+                inscribirse
+        );
+        informacion.setPrefWidth(240);
+        informacion.setMinWidth(240);
+
+        // IMAGEN DEL CURSO
+        ImageView imagen = new ImageView(cargarImagen(curso.getFoto()));
+        imagen.setFitWidth(210);
+        imagen.setFitHeight(170);
+        imagen.setPreserveRatio(true);
+        imagen.setSmooth(true);
+
+        // Esquinas redondeadas
+        Rectangle clip = new Rectangle(210, 170);
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
+        imagen.setClip(clip);
+
+        tarjeta.getChildren().setAll(informacion, imagen);
+        GridPane.setHgrow(tarjeta, Priority.NEVER);
+        GridPane.setFillWidth(tarjeta, false);
+        gridCursos.add(tarjeta, columna, fila);
+
+        if (++columna == 2) {
+            columna = 0;
+            fila++;
+        }
+
+        }
+    }
+}
