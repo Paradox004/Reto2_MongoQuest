@@ -85,9 +85,27 @@ abstract class PruebaVista extends ApplicationTest {
         DialogPane dialogo = dialogo();
         String mensaje = dialogo.getContentText();
         clickOn(dialogo.lookupButton(ButtonType.OK));
-        // El controlador sigue trabajando en el hilo de JavaFX al cerrarse el aviso: esperar
-        WaitForAsyncUtils.waitForFxEvents();
+        esperarCierre(dialogo);
         return mensaje;
+    }
+
+    /**
+     * Espera a que se cierre la ventana del aviso y a que el controlador termine
+     * lo que hace después (por ejemplo, pasar a la pregunta siguiente). Sin esto,
+     * el test puede comprobar la pantalla un instante antes de que cambie.
+     *
+     * @param dialogo aviso que se acaba de cerrar
+     */
+    private void esperarCierre(DialogPane dialogo) {
+        try {
+            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
+                    () -> dialogo.getScene() == null || !dialogo.getScene().getWindow().isShowing());
+        } catch (TimeoutException e) {
+            // Sigue abierto: la comprobación siguiente del test fallará con un mensaje claro
+        }
+        // Dos pasadas: una para que termine showAndWait() y otra para lo que el controlador hace después
+        WaitForAsyncUtils.waitForFxEvents();
+        WaitForAsyncUtils.waitForFxEvents();
     }
 
     /**
@@ -98,7 +116,7 @@ abstract class PruebaVista extends ApplicationTest {
     protected void responderConfirmacion(boolean si) {
         DialogPane dialogo = dialogo();
         clickOn(dialogo.lookupButton(si ? ButtonType.YES : ButtonType.NO));
-        WaitForAsyncUtils.waitForFxEvents();
+        esperarCierre(dialogo);
     }
 
     /**
