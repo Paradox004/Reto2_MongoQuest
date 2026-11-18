@@ -27,8 +27,8 @@
             </Label>
             <HBox alignment="CENTER_LEFT" spacing="8.0">
                <children>
-                  <ComboBox fx:id="cbTipo" prefWidth="150.0" promptText="Todos los tipos" />
-                  <CheckBox fx:id="chBSoloError" mnemonicParsing="false" text="Solo errores" />
+                  <ComboBox fx:id="cbTipo" onAction="#aplicarFiltro" prefWidth="150.0" promptText="Todos los tipos" />
+                  <CheckBox fx:id="chBSoloError" mnemonicParsing="false" onAction="#aplicarFiltro" text="Solo errores" />
                   <TextField fx:id="tFBuscar" prefHeight="25.0" prefWidth="161.0" promptText="Buscar por usuario o detalle" />
                   <Button fx:id="bActualizar" mnemonicParsing="false" onAction="#actualizar" text="Actualizar" textAlignment="CENTER" />
                </children>
