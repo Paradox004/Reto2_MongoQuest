@@ -166,7 +166,7 @@ public class TodosCursosController implements Initializable {
 
             } catch (IOException ex) {
 
-                ex.printStackTrace();
+                Alertas.error("No se ha podido abrir la pantalla", ex.getMessage());
 
             }
         });

@@ -156,7 +156,7 @@ public class SeleccionCursoController {
 
             } catch (IOException ex) {
 
-                ex.printStackTrace();
+                Alertas.error("No se ha podido abrir la pantalla", ex.getMessage());
 
             }
         });
