@@ -1,0 +1,62 @@
+/*
+ * navegacion.css: pestañas (TabPane), barra de menús y menús contextuales.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Pestañas ===== */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent -tg-borde transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-padding: 6 14 6 14;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -tg-texto-suave;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: transparent transparent -tg-turquesa transparent;
+    -fx-border-width: 0 0 3 0;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: -tg-indigo;
+}
+
+.tab-pane .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+}
+
+/* ===== Menús y menús contextuales ===== */
+.menu-bar {
+    -fx-background-color: -tg-indigo;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-bar .menu:hover,
+.menu-bar .menu:showing {
+    -fx-background-color: -tg-indigo-oscuro;
+}
+
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 8;
+}
+
+.menu-item:focused {
+    -fx-background-color: #E6F6F3;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: -tg-indigo;
+}

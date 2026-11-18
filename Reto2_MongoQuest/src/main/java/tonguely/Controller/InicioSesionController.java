@@ -9,14 +9,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import tonguely.DAO.ProfesorDAO;
 import tonguely.modelo.Usuario;
 import tonguely.Main.App;
 import tonguely.DAO.UsuarioDAO;
 import tonguely.Excepciones.TonguelyException;
+import tonguely.modelo.Profesor;
 
 /**
  *
@@ -36,46 +38,52 @@ public class InicioSesionController {
     private Button invitadoButton;
 
     UsuarioDAO dao = new UsuarioDAO();
+    ProfesorDAO profesorDao = new ProfesorDAO();
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
+        String email = emailField.getText();
+        String contrasena = contrasenaField.getText();
 
-        // Si MongoDB falla, el DAO ya lo ha registrado en el log: aquí solo se avisa al usuario
-        Usuario usuario;
+        // 1. Comprobar primero si es un profesor y, si no, si es un usuario.
+        //    Los DAO inician la Sesion y registran el login en el log.
+        //    Si MongoDB falla, el DAO ya lo ha registrado: aquí solo se avisa al usuario.
+        Profesor profesor;
+        Usuario usuario = null;
         try {
-            usuario = dao.comprobarLogin(emailField.getText(), contrasenaField.getText());
+            profesor = profesorDao.comprobarLogin(email, contrasena);
+            if (profesor == null) {
+                usuario = dao.comprobarLogin(email, contrasena);
+            }
         } catch (TonguelyException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("No se ha podido iniciar sesión");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
+            Alertas.error("No se ha podido iniciar sesión", e.getMessage());
             return;
         }
-        if (usuario != null) {
-            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-            alerta.setTitle("Credenciales Correctas");
-            alerta.setHeaderText("Inicio de sesión correcto");
-            alerta.setContentText("Las credenciales coinciden.");
-            alerta.showAndWait();
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                        App.class.getResource("/view/seleccionCurso.fxml")
-                );
-                Parent root = loader.load();
-                SeleccionCursoController controller = loader.getController();
-                controller.cargarCursos(usuario.getId());
-                App.scene.setRoot(root);
 
+        // 2. Profesor: panel de administración
+        if (profesor != null) {
+            Alertas.informacion("Credenciales Correctas", "Inicio de sesión correcto",
+                    "Bienvenido/a, profesor/a " + profesor.getNombre() + ".");
+            try {
+                App.setRoot("admin");
             } catch (IOException ex) {
                 System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
+            return;
+        }
+
+        // 3. Usuario: pantalla principal; si no, credenciales incorrectas
+        if (usuario != null) {
+            Alertas.informacion("Credenciales Correctas", "Inicio de sesión correcto",
+                    "Las credenciales coinciden.");
+            try {
+                App.setRoot("principalUsuario");
+            } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            return;
         } else {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("Inicio de sesión incorrecto");
-            alerta.setContentText("El usuario o la contraseña no son correctos.");
-            alerta.showAndWait();
+            Alertas.error("Inicio de sesión incorrecto", "El usuario o la contraseña no son correctos.");
             emailField.setText("");
             contrasenaField.setText("");
         }
@@ -92,6 +100,21 @@ public class InicioSesionController {
 
     @FXML
     private void entradaInvitado(ActionEvent event) {
+         try {
+                FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("/view/todosLosCursos.fxml")
+                );
+                Parent root = loader.load();
+                App.scene.setRoot(root);
+                Stage stage = (Stage) App.scene.getWindow();
+                stage.setWidth(1200);
+                stage.setHeight(750);
+                stage.centerOnScreen();
+                TodosCursosController controller = loader.getController();
+
+            } catch (IOException ex) {
+                System.getLogger(InicioSesionController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
     }
 
 }

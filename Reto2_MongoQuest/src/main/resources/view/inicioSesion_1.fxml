@@ -1,69 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.InicioSesionController">
-   <children>
-      <Pane layoutX="162.0" layoutY="26.0" prefHeight="416.0" prefWidth="276.0">
+<ScrollPane fx:id="root" fitToHeight="true" fitToWidth="true" minHeight="460.0" minWidth="360.0" prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #f2faf6; -fx-background: #f2faf6;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tonguely.Controller.InicioSesionController">
+   <content>
+      <StackPane style="-fx-background-color: #f2faf6;">
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+         </padding>
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="416.0" layoutX="-1.0" stroke="#057d4d" strokeType="INSIDE" width="276.0">
-               <effect>
-                  <Blend />
-               </effect>
-            </Rectangle>
-            <Label layoutX="67.0" layoutY="78.0" text="¡Bienvenido de nuevo!">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="34.0" layoutY="88.0" prefHeight="59.0" prefWidth="204.0" text="Introduce tus datos para continuar con tu aprendizaje y mantener la racha al dia." textAlignment="CENTER" textFill="#4e4e4e" textOverrun="CLIP" wrapText="true">
-               <font>
-                  <Font size="9.0" />
-               </font>
-            </Label>
-            <Label layoutX="20.0" layoutY="164.0" prefHeight="16.0" prefWidth="99.0" text="Correo electrónico">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-            <Label layoutX="20.0" layoutY="231.0" prefHeight="16.0" prefWidth="99.0" text="Contraseña">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-            <TextField fx:id="emailField" layoutX="20.0" layoutY="183.0" prefHeight="25.0" prefWidth="231.0" promptText="✉ ejemplo@correo.com" />
-            <PasswordField fx:id="contrasenaField" layoutX="20.0" layoutY="247.0" prefHeight="25.0" prefWidth="231.0" promptText="🔒 Tu contraseña secreta" />
-            <Button fx:id="iniciarSesionButton" layoutX="20.0" layoutY="293.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="40.0" prefWidth="231.0" text="Iniciar sesión →" />
-            <Button fx:id="registrarButton" layoutX="20.0" layoutY="342.0" mnemonicParsing="false" onAction="#registrarUsuario" prefHeight="50.0" prefWidth="105.0" text="¿Aún no tienes cuenta? Regístrate gratis" wrapText="true">
-               <font>
-                  <Font name="System Italic" size="8.0" />
-               </font>
-            </Button>
-            <Button fx:id="invitadoButton" layoutX="146.0" layoutY="342.0" mnemonicParsing="false" onAction="#entradaInvitado" prefHeight="50.0" prefWidth="105.0" text="¿Prefieres expliorar antes? Continuar como invitado" wrapText="true">
-               <font>
-                  <Font name="System Italic" size="8.0" />
-               </font>
-            </Button>
-            <Label layoutX="125.0" layoutY="49.0" text="Tonguely">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#057d4d" height="25.0" layoutX="92.0" layoutY="47.0" stroke="BLACK" strokeType="INSIDE" width="27.0" />
+            <VBox alignment="TOP_CENTER" fillWidth="true" maxWidth="460.0" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #057d4d; -fx-border-width: 1;" StackPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#057d4d" height="25.0" stroke="BLACK" strokeType="INSIDE" width="27.0" />
+                        <Label text="Tonguely">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+
+                  <Label text="¡Bienvenido de nuevo!">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label maxWidth="1.7976931348623157E308" text="Introduce tus datos para continuar con tu aprendizaje y mantener la racha al día." textAlignment="CENTER" textFill="#4e4e4e" wrapText="true">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+
+                  <Label text="Correo electrónico">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="16.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="emailField" maxWidth="1.7976931348623157E308" promptText="✉ ejemplo@correo.com" />
+
+                  <Label text="Contraseña">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="6.0" />
+                     </VBox.margin>
+                  </Label>
+                  <PasswordField fx:id="contrasenaField" maxWidth="1.7976931348623157E308" promptText="🔒 Tu contraseña secreta" />
+
+                  <Button fx:id="iniciarSesionButton" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar sesión →">
+                     <VBox.margin>
+                        <Insets top="14.0" />
+                     </VBox.margin>
+                  </Button>
+
+                  <HBox spacing="12.0">
+                     <children>
+                        <Button fx:id="registrarButton" maxWidth="1.7976931348623157E308" minHeight="50.0" mnemonicParsing="false" onAction="#registrarUsuario" text="¿Aún no tienes cuenta? Regístrate gratis" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Italic" size="11.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="invitadoButton" maxWidth="1.7976931348623157E308" minHeight="50.0" mnemonicParsing="false" onAction="#entradaInvitado" text="¿Prefieres explorar antes? Continuar como invitado" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Italic" size="11.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
-         <effect>
-            <Blend mode="GREEN" />
-         </effect>
-      </Pane>
-   </children>
-   <effect>
-      <Blend mode="RED" />
-   </effect>
-</Pane>
+      </StackPane>
+   </content>
+</ScrollPane>

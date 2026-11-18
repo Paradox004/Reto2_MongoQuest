@@ -1,0 +1,52 @@
+/*
+ * botones.css: botón principal (degradado del logo), boton-secundario y boton-peligro.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Botones ===== */
+/* Principal: degradado del bocadillo del logo */
+.button {
+    -fx-background-color: linear-gradient(to right, -tg-turquesa, -tg-verde);
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 7 16 7 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to right, #17897E, #26995F);
+}
+
+.button:pressed {
+    -fx-background-color: -tg-indigo;
+}
+
+.button:focused {
+    -fx-effect: dropshadow(gaussian, #1FA89A66, 6, 0.3, 0, 0);
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+/* Secundario: para "Cancelar", "Volver"... (Style Class: boton-secundario) */
+.button.boton-secundario {
+    -fx-background-color: white;
+    -fx-border-color: -tg-indigo;
+    -fx-border-radius: 8;
+    -fx-text-fill: -tg-indigo;
+}
+
+.button.boton-secundario:hover {
+    -fx-background-color: #EEEDFA;
+}
+
+/* Peligro: para "Eliminar" (Style Class: boton-peligro) */
+.button.boton-peligro {
+    -fx-background-color: -tg-error;
+}
+
+.button.boton-peligro:hover {
+    -fx-background-color: #B83232;
+}

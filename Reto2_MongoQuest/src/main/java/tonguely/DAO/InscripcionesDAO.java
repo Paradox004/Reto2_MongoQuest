@@ -5,6 +5,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import tonguely.Excepciones.ConexionException;
@@ -18,7 +20,7 @@ import tonguely.modelo.Inscripciones;
  *
  * @author anartz
  */
-public class InscripcionesDAO {
+public class InscripcionesDAO implements IInscripcionesDAO {
 
     /** Nombre de la colección, usado también en el log. */
     private static final String COLECCION = "Inscripciones";
@@ -71,6 +73,82 @@ public class InscripcionesDAO {
         } catch (MongoException e) {
             GestorLog.registrarError(TipoOperacion.CONSULTAR, COLECCION, e);
             throw new ConexionException("No se ha podido comprobar la inscripción.", e);
+        }
+    }
+    
+    /**
+     * Devuelve las inscripciones de varios cursos a la vez.
+     *
+     * @param idsCursos ids de los cursos
+     * @return lista de inscripciones (vacía si no se pasa ningún curso)
+     * @throws ConexionException si MongoDB no responde
+     */
+    public List<Inscripciones> buscarPorCursos(Collection<ObjectId> idsCursos) throws TonguelyException {
+        if (idsCursos == null || idsCursos.isEmpty()) {
+            return new ArrayList<>();
+        }
+        try {
+            List<Inscripciones> ins = coleccion.find(Filters.in("idCurso", idsCursos))
+                    .into(new ArrayList<>());
+            GestorLog.registrar(TipoOperacion.CONSULTAR, COLECCION,
+                    "Inscripciones de " + idsCursos.size() + " cursos (" + ins.size() + ")");
+            return ins;
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.CONSULTAR, COLECCION, e);
+            throw new ConexionException("No se han podido cargar las inscripciones.", e);
+        }
+    }
+
+    /**
+     * Inscribe a un estudiante en un curso. Si ya estaba inscrito, no hace nada.
+     *
+     * @param idEstudiante id del estudiante
+     * @param idCurso id del curso
+     * @throws ConexionException si MongoDB no responde
+     */
+    public void inscribir(ObjectId idEstudiante, ObjectId idCurso) throws TonguelyException {
+        // 1. Evitar inscripciones repetidas (estaInscrito ya registra y lanza si falla)
+        if (estaInscrito(idEstudiante, idCurso)) {
+            return;
+        }
+
+        // 2. Crear la inscripción con sus valores iniciales
+        Inscripciones ins = new Inscripciones();
+        ins.setIdEstudiante(idEstudiante);
+        ins.setIdCurso(idCurso);
+        ins.setProgreso(0);
+        ins.setFechaInicio(new Date());
+        ins.setEstado("En curso");
+
+        // 3. Insertar y registrar
+        try {
+            coleccion.insertOne(ins);
+            GestorLog.registrar(TipoOperacion.INSERTAR, COLECCION,
+                    "Inscribir estudiante " + idEstudiante + " en curso " + idCurso);
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.INSERTAR, COLECCION, e);
+            throw new ConexionException("No se ha podido realizar la inscripción.", e);
+        }
+    }
+
+    /**
+     * Quita a un estudiante de un curso.
+     *
+     * @param idEstudiante id del estudiante
+     * @param idCurso id del curso
+     * @throws ConexionException si MongoDB no responde
+     */
+    public void desinscribir(ObjectId idEstudiante, ObjectId idCurso) throws TonguelyException {
+        try {
+            long borradas = coleccion.deleteMany(Filters.and(
+                    Filters.eq("idEstudiante", idEstudiante),
+                    Filters.eq("idCurso", idCurso))).getDeletedCount();
+            GestorLog.registrar(TipoOperacion.BORRAR, COLECCION,
+                    "Quitar estudiante " + idEstudiante + " del curso " + idCurso
+                    + " (" + borradas + ")");
+        } catch (MongoException e) {
+            GestorLog.registrarError(TipoOperacion.BORRAR, COLECCION, e);
+            throw new ConexionException("No se ha podido quitar la inscripción.", e);
         }
     }
 }

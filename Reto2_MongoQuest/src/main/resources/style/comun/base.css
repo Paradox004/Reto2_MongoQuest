@@ -1,0 +1,65 @@
+/*
+ * base.css: paleta de colores, fuente, fondo y clases generales (titulo, subtitulo, tarjeta, barras de desplazamiento). Va la primera: el resto usa sus colores.
+ * Parte de la hoja común: se carga desde tonguely.css con @import.
+ */
+
+/* ===== Colores (se usan con su nombre en el resto de la hoja) ===== */
+.root {
+    -tg-indigo: #2E2A8F;
+    -tg-indigo-oscuro: #1E1B4B;
+    -tg-turquesa: #1FA89A;
+    -tg-verde: #2EB872;
+    -tg-lima: #8BC34A;
+    -tg-fondo: #F2FAF6;
+    -tg-borde: #CFE3DA;
+    -tg-texto: #1F2937;
+    -tg-texto-suave: #6B7280;
+    -tg-error: #D64545;
+
+    /* Colores de selección y foco de los controles de JavaFX */
+    -fx-accent: -tg-turquesa;
+    -fx-focus-color: -tg-turquesa;
+    -fx-faint-focus-color: #1FA89A22;
+
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+
+    /* Fondo de las pantallas que no ponen uno propio */
+    -fx-background-color: -tg-fondo;
+}
+
+.label {
+    -fx-text-fill: -tg-texto;
+}
+
+/* ===== Clases para usar desde Scene Builder (Style Class) ===== */
+.titulo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -tg-indigo;
+}
+
+.subtitulo {
+    -fx-font-size: 15px;
+    -fx-text-fill: -tg-texto-suave;
+}
+
+.tarjeta {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: -tg-borde;
+    -fx-border-radius: 14;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(46, 42, 143, 0.10), 12, 0, 0, 3);
+}
+
+/* ===== Barras de desplazamiento ===== */
+.scroll-bar .thumb {
+    -fx-background-color: #B9D6CB;
+    -fx-background-radius: 6;
+}
+
+.scroll-bar .track,
+.scroll-bar {
+    -fx-background-color: transparent;
+}
