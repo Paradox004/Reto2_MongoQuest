@@ -15,6 +15,12 @@ import tonguely.Excepciones.TonguelyException;
  */
 public interface IActividadesDAO {
 
-    /** Devuelve las actividades de un curso. */
+    /**
+     * Devuelve las actividades de un curso.
+     *
+     * @param idCurso id del curso
+     * @return lista de actividades (vacía si el curso no tiene)
+     * @throws TonguelyException si falla MongoDB
+     */
     ArrayList<Actividades> actividadesCurso(ObjectId idCurso) throws TonguelyException;
 }

@@ -17,7 +17,7 @@
             <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
          </padding>
          <children>
-            <VBox alignment="TOP_CENTER" fillWidth="true" maxWidth="460.0" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #057d4d; -fx-border-width: 1;" StackPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" fillWidth="true" maxHeight="-Infinity" maxWidth="460.0" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #057d4d; -fx-border-width: 1;" StackPane.alignment="CENTER">
                <padding>
                   <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
                </padding>

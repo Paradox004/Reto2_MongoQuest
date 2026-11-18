@@ -60,11 +60,9 @@ public class SeleccionCursoController {
     private ObjectId idEstudiante1;
 
     /**
-     * Carga los cursos en los que está inscrito el estudiante.
-     *
-     * @param idEstudiante identificador del estudiante.
+     * Carga los cursos en los que está inscrito el estudiante que ha
+     * iniciado sesión (se obtiene de {@link tonguely.Main.Sesion}).
      */
-
     public void cargarCursos() {
 
         this.idEstudiante1 = Sesion.getUsuarioActual().getId();
